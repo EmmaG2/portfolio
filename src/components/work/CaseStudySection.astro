@@ -1,0 +1,95 @@
+---
+interface Props {
+  label: string
+  index?: string
+}
+
+const { label, index } = Astro.props
+---
+
+<section class="cs-section" aria-labelledby={`cs-section-${index}`}>
+  <header class="cs-section__header">
+    {index && <span class="cs-section__index" aria-hidden="true">{index}</span>}
+    <h2 id={`cs-section-${index}`} class="cs-section__label">{label}</h2>
+    <div class="cs-section__line" aria-hidden="true"></div>
+  </header>
+
+  <div class="cs-section__body">
+    <slot />
+  </div>
+</section>
+
+<style>
+  .cs-section {
+    padding-block: var(--space-16);
+    border-top: 1px solid color-mix(in srgb, var(--color-text-primary) 8%, transparent);
+  }
+
+  .cs-section__header {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: var(--space-4);
+    margin-bottom: var(--space-10);
+  }
+
+  .cs-section__index {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-accent);
+    letter-spacing: var(--tracking-widest);
+  }
+
+  .cs-section__label {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 0;
+    white-space: nowrap;
+  }
+
+  .cs-section__line {
+    height: 1px;
+    background: color-mix(in srgb, var(--color-text-primary) 8%, transparent);
+  }
+
+  .cs-section__body {
+    max-width: 680px;
+    font-size: var(--text-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--color-text-secondary);
+  }
+
+  .cs-section__body :global(p) {
+    margin-block: var(--space-4);
+  }
+
+  .cs-section__body :global(p:first-child) {
+    margin-top: 0;
+  }
+
+  .cs-section__body :global(strong) {
+    color: var(--color-text-primary);
+    font-weight: var(--weight-semibold);
+  }
+
+  .cs-section__body :global(ul),
+  .cs-section__body :global(ol) {
+    padding-left: var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .cs-section__body :global(code) {
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+    background: color-mix(in srgb, var(--color-text-primary) 6%, transparent);
+    padding: 2px var(--space-2);
+    border-radius: var(--radius-sm);
+    color: var(--color-accent);
+  }
+</style>

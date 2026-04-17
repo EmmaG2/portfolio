@@ -1,0 +1,212 @@
+---
+import type { CollectionEntry } from 'astro:content'
+import AccentLabel from '../ui/AccentLabel.astro'
+import TechStack from './TechStack.astro'
+
+interface Props {
+  project: CollectionEntry<'projects'>
+}
+
+const { project } = Astro.props
+const { title, tagline, category, year, role, duration, liveUrl, githubUrl, tech, metrics, coverImage, coverAlt } =
+  project.data
+---
+
+<header class="cs-hero">
+  <div class="cs-hero__content">
+    <AccentLabel text={`${category} · ${year}`} />
+
+    <h1 class="cs-hero__title">{title}</h1>
+    <p class="cs-hero__tagline">{tagline}</p>
+
+    <dl class="cs-hero__details">
+      <div>
+        <dt>Role</dt>
+        <dd>{role}</dd>
+      </div>
+      <div>
+        <dt>Duration</dt>
+        <dd>{duration}</dd>
+      </div>
+    </dl>
+
+    <div class="cs-hero__links">
+      {
+        liveUrl && (
+          <a href={liveUrl} target="_blank" rel="noopener noreferrer" class="cs-hero__link">
+            Live Site ↗
+          </a>
+        )
+      }
+      {
+        githubUrl && (
+          <a href={githubUrl} target="_blank" rel="noopener noreferrer" class="cs-hero__link">
+            GitHub ↗
+          </a>
+        )
+      }
+    </div>
+  </div>
+
+  {
+    metrics && metrics.length > 0 && (
+      <ul class="cs-hero__metrics" aria-label="Key results">
+        {metrics.map((m) => (
+          <li>
+            <span class="cs-hero__metric-value">{m.value}</span>
+            <span class="cs-hero__metric-label">{m.label}</span>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+
+  <div class="cs-hero__tech">
+    <AccentLabel text="Tech Stack" />
+    <TechStack technologies={tech} />
+  </div>
+
+  <figure class="cs-hero__cover">
+    <img
+      src={coverImage}
+      alt={coverAlt}
+      width="1200"
+      height="675"
+      loading="eager"
+      decoding="async"
+    />
+  </figure>
+</header>
+
+<style>
+  .cs-hero {
+    padding-top: calc(var(--space-20) + 80px);
+    padding-inline: var(--container-padding);
+    max-width: var(--container-max);
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+  }
+
+  .cs-hero__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    max-width: 720px;
+  }
+
+  .cs-hero__title {
+    font-family: var(--font-display);
+    font-size: var(--text-5xl);
+    font-weight: var(--weight-bold);
+    color: var(--color-text-primary);
+    line-height: var(--leading-tight);
+    margin: 0;
+  }
+
+  .cs-hero__tagline {
+    font-size: var(--text-xl);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-relaxed);
+    margin: 0;
+  }
+
+  .cs-hero__details {
+    display: flex;
+    gap: var(--space-8);
+    margin: 0;
+  }
+
+  .cs-hero__details div {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .cs-hero__details dt {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .cs-hero__details dd {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  .cs-hero__links {
+    display: flex;
+    gap: var(--space-6);
+  }
+
+  .cs-hero__link {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-accent);
+    text-decoration: none;
+    transition: opacity var(--duration-fast) var(--ease-out-cubic);
+  }
+
+  .cs-hero__link:hover {
+    opacity: 0.7;
+  }
+
+  .cs-hero__metrics {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: var(--space-12);
+    flex-wrap: wrap;
+    padding-block: var(--space-8);
+    border-top: 1px solid color-mix(in srgb, var(--color-text-primary) 8%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--color-text-primary) 8%, transparent);
+  }
+
+  .cs-hero__metrics li {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .cs-hero__metric-value {
+    font-family: var(--font-display);
+    font-size: var(--text-4xl);
+    font-weight: var(--weight-bold);
+    color: var(--color-accent);
+    line-height: 1;
+  }
+
+  .cs-hero__metric-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+
+  .cs-hero__tech {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .cs-hero__cover {
+    margin: 0;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--color-surface-raised);
+  }
+
+  .cs-hero__cover img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+</style>

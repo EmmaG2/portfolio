@@ -1,0 +1,47 @@
+---
+interface Props {
+  technologies: string[]
+  variant?: 'compact' | 'full'
+}
+
+const { technologies, variant = 'full' } = Astro.props
+---
+
+<ul class:list={['tech-stack', `tech-stack--${variant}`]} aria-label="Technologies used">
+  {technologies.map((tech) => <li class="tech-chip">{tech}</li>)}
+</ul>
+
+<style>
+  .tech-stack {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .tech-chip {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-secondary);
+    background: color-mix(in srgb, var(--color-text-primary) 6%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-text-primary) 12%, transparent);
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-full);
+    transition: color var(--duration-fast) var(--ease-out-cubic),
+      border-color var(--duration-fast) var(--ease-out-cubic);
+  }
+
+  .tech-stack--compact .tech-chip {
+    font-size: 0.65rem;
+    padding: 2px var(--space-2);
+  }
+
+  .tech-chip:hover {
+    color: var(--color-accent);
+    border-color: color-mix(in srgb, var(--color-accent) 40%, transparent);
+  }
+</style>
