@@ -1,0 +1,21 @@
+---
+interface Props {
+  text: string
+  as?: 'span' | 'p' | 'time'
+}
+
+const { text, as: Tag = 'span' } = Astro.props
+---
+
+<Tag class="accent-label">{text}</Tag>
+
+<style>
+  .accent-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+</style>

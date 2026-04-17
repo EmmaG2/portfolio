@@ -1,0 +1,38 @@
+---
+interface Props {
+  heading: string
+  subheading?: string
+  align?: 'left' | 'center'
+  level?: 2 | 3
+}
+
+const { heading, subheading, align = 'left', level = 2 } = Astro.props
+const Tag = `h${level}` as 'h2' | 'h3'
+---
+
+<div class:list={['section-title', `section-title--${align}`]}>
+  <Tag class="section-title__heading">{heading}</Tag>
+  {subheading && <p class="section-title__sub">{subheading}</p>}
+</div>
+
+<style>
+  .section-title--center {
+    text-align: center;
+  }
+
+  .section-title__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-4xl);
+    font-weight: var(--weight-bold);
+    color: var(--color-text-primary);
+    line-height: var(--leading-tight);
+    margin: 0;
+  }
+
+  .section-title__sub {
+    margin: var(--space-3) 0 0;
+    font-size: var(--text-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-relaxed);
+  }
+</style>
