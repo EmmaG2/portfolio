@@ -1,0 +1,68 @@
+---
+import { getCollection } from 'astro:content'
+import BaseLayout from '../../components/layout/BaseLayout.astro'
+import SiteNav from '../../components/layout/SiteNav.astro'
+import SiteFooter from '../../components/layout/SiteFooter.astro'
+import ProjectCard from '../../components/work/ProjectCard.astro'
+import AccentLabel from '../../components/ui/AccentLabel.astro'
+import SectionTitle from '../../components/ui/SectionTitle.astro'
+
+const projects = await getCollection('projects')
+const sorted = projects.sort((a, b) => b.data.year - a.data.year)
+---
+
+<BaseLayout
+  title="Work"
+  description="Case studies from Fernando Granados. Full Stack projects built with React, Next.js, Node.js, FastAPI and PostgreSQL — with real results."
+>
+  <SiteNav slot="nav" currentPath={Astro.url.pathname} />
+
+  <div class="work-page">
+    <header class="work-page__header" data-reveal>
+      <AccentLabel text="Work" />
+      <SectionTitle
+        heading="Things I've shipped."
+        subheading="Deep dives into real problems and real solutions."
+      />
+    </header>
+
+    <ul class="work-page__list" role="list">
+      {
+        sorted.map((project, i) => (
+          <li data-reveal>
+            <ProjectCard project={project} index={i + 1} variant="list" />
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  <SiteFooter slot="footer" />
+</BaseLayout>
+
+<style>
+  .work-page {
+    padding: calc(var(--space-20) + 80px) var(--container-padding) var(--space-32);
+    max-width: var(--container-max);
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-20);
+  }
+
+  .work-page__header {
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .work-page__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+  }
+</style>

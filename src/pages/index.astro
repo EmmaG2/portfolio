@@ -1,18 +1,46 @@
 ---
-import "../styles/globals.css"
-import HeroTorus from "../components/HeroTorus.astro"
+import BaseLayout from '../components/layout/BaseLayout.astro'
+import SiteNav from '../components/layout/SiteNav.astro'
+import SiteFooter from '../components/layout/SiteFooter.astro'
+import HeroSection from '../components/home/HeroSection.astro'
+import WorkPreview from '../components/home/WorkPreview.astro'
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Fernando Granados',
+  jobTitle: 'Full Stack Engineer',
+  url: 'https://fernandogranados.dev',
+  email: '23041076@itdurango.edu.mx',
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Durango',
+    addressCountry: 'MX',
+  },
+  sameAs: [
+    'https://github.com/EmmaG2',
+    'https://linkedin.com/in/fernando-granados',
+  ],
+  knowsAbout: [
+    'TypeScript',
+    'React',
+    'Next.js',
+    'Node.js',
+    'FastAPI',
+    'PostgreSQL',
+    'Docker',
+    'Astro',
+  ],
+}
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Portfolio</title>
-	</head>
-	<body>
-		<HeroTorus />
-	</body>
-</html>
+<BaseLayout
+  title="Full Stack Engineer"
+  description="Fernando Granados is a Senior Full Stack Engineer based in Durango, MX. 5 years shipping products from idea to production with React, Next.js, Node.js and FastAPI."
+  structuredData={structuredData}
+>
+  <SiteNav slot="nav" currentPath={Astro.url.pathname} />
+  <HeroSection />
+  <WorkPreview />
+  <SiteFooter slot="footer" />
+</BaseLayout>

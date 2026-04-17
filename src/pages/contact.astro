@@ -1,0 +1,143 @@
+---
+import BaseLayout from '../components/layout/BaseLayout.astro'
+import SiteNav from '../components/layout/SiteNav.astro'
+import SiteFooter from '../components/layout/SiteFooter.astro'
+import AccentLabel from '../components/ui/AccentLabel.astro'
+---
+
+<BaseLayout
+  title="Contact"
+  description="Get in touch with Fernando Granados — Senior Full Stack Engineer available for full-time roles and select freelance projects. Based in Durango, MX, open to remote."
+>
+  <SiteNav slot="nav" currentPath={Astro.url.pathname} />
+
+  <div class="contact-page">
+    <div class="contact-page__inner" data-reveal>
+      <AccentLabel text="Contact" />
+
+      <h1 class="contact-page__heading">Let's build something.</h1>
+
+      <p class="contact-page__sub">
+        I'm open to full-time roles and select freelance projects.<br />
+        The fastest way to reach me:
+      </p>
+
+      <a href="mailto:23041076@itdurango.edu.mx" class="contact-page__email">
+        23041076@itdurango.edu.mx
+      </a>
+
+      <nav class="contact-page__social" aria-label="Social links">
+        <a
+          href="https://linkedin.com/in/fernando-granados"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="social-link"
+        >
+          <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <rect x="2" y="9" width="4" height="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="4" cy="4" r="2" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+          LinkedIn
+        </a>
+        <a
+          href="https://github.com/EmmaG2"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="social-link"
+        >
+          <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          GitHub
+        </a>
+      </nav>
+
+      <p class="contact-page__availability">
+        Based in Durango, MX · Open to remote · Available now
+      </p>
+    </div>
+  </div>
+
+  <SiteFooter slot="footer" />
+</BaseLayout>
+
+<style>
+  .contact-page {
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-20) var(--container-padding);
+  }
+
+  .contact-page__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-6);
+    max-width: 560px;
+  }
+
+  .contact-page__heading {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 8vw, 5rem);
+    font-weight: var(--weight-bold);
+    color: var(--color-text-primary);
+    line-height: var(--leading-tight);
+    margin: 0;
+  }
+
+  .contact-page__sub {
+    font-size: var(--text-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-relaxed);
+    margin: 0;
+  }
+
+  .contact-page__email {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    color: var(--color-accent);
+    text-decoration: none;
+    transition: opacity var(--duration-fast) var(--ease-out-cubic);
+    word-break: break-all;
+  }
+
+  .contact-page__email:hover {
+    opacity: 0.75;
+  }
+
+  .contact-page__social {
+    display: flex;
+    gap: var(--space-8);
+    margin-top: var(--space-2);
+  }
+
+  .social-link {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-out-cubic);
+  }
+
+  .social-link:hover {
+    color: var(--color-accent);
+  }
+
+  .contact-page__availability {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    margin: 0;
+  }
+</style>

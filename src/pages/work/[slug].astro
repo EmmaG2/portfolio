@@ -1,0 +1,105 @@
+---
+import type { GetStaticPaths } from 'astro'
+import type { CollectionEntry } from 'astro:content'
+import { getCollection, render } from 'astro:content'
+import BaseLayout from '../../components/layout/BaseLayout.astro'
+import SiteNav from '../../components/layout/SiteNav.astro'
+import SiteFooter from '../../components/layout/SiteFooter.astro'
+import CaseStudyHero from '../../components/work/CaseStudyHero.astro'
+import ArrowLink from '../../components/ui/ArrowLink.astro'
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const projects = await getCollection('projects')
+  return projects.map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }))
+}
+
+interface Props {
+  project: CollectionEntry<'projects'>
+}
+
+const { project } = Astro.props
+const { Content } = await render(project)
+
+const allProjects = await getCollection('projects')
+const sorted = allProjects.sort((a, b) => b.data.year - a.data.year)
+const currentIndex = sorted.findIndex((p) => p.id === project.id)
+const prev = sorted[currentIndex + 1]
+const next = sorted[currentIndex - 1]
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: project.data.title,
+  description: project.data.seo.description,
+  url: `https://fernandogranados.dev/work/${project.id}`,
+  author: {
+    '@type': 'Person',
+    name: 'Fernando Granados',
+    url: 'https://fernandogranados.dev',
+  },
+  datePublished: `${project.data.year}-01-01`,
+  image: project.data.seo.ogImage ?? project.data.coverImage,
+}
+---
+
+<BaseLayout
+  title={project.data.title}
+  description={project.data.seo.description}
+  ogType="article"
+  ogImage={project.data.seo.ogImage ?? project.data.coverImage}
+  structuredData={structuredData}
+>
+  <SiteNav slot="nav" currentPath={Astro.url.pathname} />
+
+  <article class="case-study">
+    <CaseStudyHero project={project} />
+
+    <div class="case-study__body">
+      <Content />
+    </div>
+
+    <nav class="case-study__nav" aria-label="Project navigation">
+      {
+        prev && (
+          <div class="case-study__nav-prev">
+            <ArrowLink href={`/work/${prev.id}`} label={`← ${prev.data.title}`} />
+          </div>
+        )
+      }
+      {
+        next && (
+          <div class="case-study__nav-next">
+            <ArrowLink href={`/work/${next.id}`} label={`${next.data.title} →`} />
+          </div>
+        )
+      }
+    </nav>
+  </article>
+
+  <SiteFooter slot="footer" />
+</BaseLayout>
+
+<style>
+  .case-study__body {
+    padding-inline: var(--container-padding);
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-bottom: var(--space-20);
+  }
+
+  .case-study__nav {
+    padding: var(--space-16) var(--container-padding);
+    max-width: var(--container-max);
+    margin-inline: auto;
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid color-mix(in srgb, var(--color-text-primary) 8%, transparent);
+  }
+
+  .case-study__nav-next {
+    margin-left: auto;
+  }
+</style>

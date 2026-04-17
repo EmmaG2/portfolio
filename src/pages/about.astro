@@ -1,0 +1,170 @@
+---
+import BaseLayout from '../components/layout/BaseLayout.astro'
+import SiteNav from '../components/layout/SiteNav.astro'
+import SiteFooter from '../components/layout/SiteFooter.astro'
+import AccentLabel from '../components/ui/AccentLabel.astro'
+import SectionTitle from '../components/ui/SectionTitle.astro'
+import SkillGroup from '../components/about/SkillGroup.astro'
+import ArrowLink from '../components/ui/ArrowLink.astro'
+
+const skills = [
+  {
+    area: 'Frontend',
+    skills: ['TypeScript', 'React', 'Next.js', 'Astro', 'CSS (no frameworks)'],
+  },
+  {
+    area: 'Backend',
+    skills: ['Node.js', 'FastAPI (Python)', 'REST APIs', 'PostgreSQL', 'MySQL'],
+  },
+  {
+    area: 'DevOps',
+    skills: ['Docker', 'CI/CD pipelines', 'Linux', 'Nginx'],
+  },
+  {
+    area: 'Practices',
+    skills: ['Clean Code', 'Semantic HTML', 'Web Accessibility', 'SEO'],
+  },
+]
+---
+
+<BaseLayout
+  title="About"
+  description="Fernando Granados is a Senior Full Stack Engineer from Durango, MX. Frontend-specialist with 5 years shipping end-to-end products using React, Next.js, Node.js and FastAPI."
+>
+  <SiteNav slot="nav" currentPath={Astro.url.pathname} />
+
+  <div class="about-page">
+    <header class="about-page__header" data-reveal>
+      <AccentLabel text="About" />
+      <SectionTitle heading="I build products,\nnot just features." />
+    </header>
+
+    <section class="about-page__bio" data-reveal aria-labelledby="bio-heading">
+      <h2 id="bio-heading" class="sr-only">Biography</h2>
+
+      <p>
+        I'm a Full Stack Engineer based in Durango, MX. Over the past 5 years I've
+        built products end-to-end — from database schema to production deployment —
+        mostly with TypeScript on both sides of the stack. Lately I've been expanding
+        into Python with FastAPI, and I'm genuinely enjoying it.
+      </p>
+
+      <p>
+        I work best on small teams where I can own a feature completely: understand
+        the why, design the solution, ship it, and measure the outcome. I'm not
+        interested in moving tickets — I'm interested in moving metrics.
+      </p>
+
+      <p>
+        Boring infrastructure, interesting problems. Ships over hype. If the team
+        cares about craft and speed in equal measure, I'm probably a good fit.
+      </p>
+    </section>
+
+    <section class="about-page__skills" data-reveal aria-labelledby="skills-heading">
+      <AccentLabel text="Skills" />
+      <div class="skills-grid">
+        {skills.map((group) => <SkillGroup area={group.area} skills={group.skills} />)}
+      </div>
+    </section>
+
+    <section class="about-page__working" data-reveal aria-labelledby="working-heading">
+      <AccentLabel text="How I Work" as="p" />
+      <ul class="working-list">
+        <li>Async-first. I write things down so my teammates don't have to ask twice.</li>
+        <li>I've worked fully remote. Clear communication is a skill I take seriously.</li>
+        <li>Opinionated but not precious. I'll defend a decision, and I'll also drop it fast when I'm wrong.</li>
+        <li>I prefer to ship something imperfect and iterate than to plan forever.</li>
+      </ul>
+    </section>
+
+    <div class="about-page__cta" data-reveal>
+      <ArrowLink href="/contact" label="Let's work together" />
+    </div>
+  </div>
+
+  <SiteFooter slot="footer" />
+</BaseLayout>
+
+<style>
+  .about-page {
+    padding: calc(var(--space-20) + 80px) var(--container-padding) var(--space-32);
+    max-width: 760px;
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-20);
+  }
+
+  .about-page__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .about-page__bio {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  .about-page__bio p {
+    font-size: var(--text-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  .about-page__skills {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: var(--space-8);
+  }
+
+  .about-page__working {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .working-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .working-list li {
+    font-size: var(--text-base);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-relaxed);
+    padding-left: var(--space-5);
+    position: relative;
+  }
+
+  .working-list li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+</style>
