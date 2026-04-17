@@ -43,3 +43,24 @@ button {
   border: none;
   background: none;
 }
+
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(var(--space-6));
+  transition:
+    opacity var(--duration-slow) var(--ease-out-cubic),
+    transform var(--duration-slow) var(--ease-out-cubic);
+}
+
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
