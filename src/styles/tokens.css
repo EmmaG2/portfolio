@@ -1,0 +1,201 @@
+/**
+ * Design System — Tokens
+ * Portfolio Personal
+ *
+ * Estética: Cosmic Dark Navy — Cinematic Editorial
+ * Referencia: Simon Sparks / Creative Mints Portfolio Animation
+ */
+
+:root {
+
+  /* ─────────────────────────────────────────────
+     COLORS
+  ───────────────────────────────────────────── */
+
+  /* Base — Navy profundo, no negro puro */
+  --color-bg:               #0B1929;
+  --color-surface:          #0F2035;
+  --color-surface-elevated: #152840;
+  --color-border:           #1E3A55;
+  --color-border-subtle:    #152438;
+
+  /* Text */
+  --color-text-primary:     #FFFFFF;
+  --color-text-secondary:   rgba(255, 255, 255, 0.55);
+  --color-text-muted:       rgba(255, 255, 255, 0.30);
+  --color-text-inverse:     #0B1929;
+
+  /* Acento — Ámbar cálido (nav, labels, highlights) */
+  --color-accent:           #E8952A;
+  --color-accent-hover:     #F5AE4D;
+  --color-accent-dim:       rgba(232, 149, 42, 0.12);
+  --color-accent-glow:      rgba(232, 149, 42, 0.30);
+
+  /* Gradiente del objeto 3D (torus) — referencia para Three.js */
+  --color-3d-blue:          #2563EB;
+  --color-3d-blue-light:    #60A5FA;
+  --color-3d-orange:        #F97316;
+  --color-3d-pink:          #EC4899;
+  --color-3d-magenta:       #D946EF;
+
+  /* Semantic */
+  --color-success:          #22C55E;
+  --color-warning:          #F59E0B;
+  --color-error:            #EF4444;
+
+
+  /* ─────────────────────────────────────────────
+     TYPOGRAPHY
+  ───────────────────────────────────────────── */
+
+  /* Font Families
+     Display: Cormorant Garamond (serif bold condensado — hero name)
+              → fonts.google.com/specimen/Cormorant+Garamond
+     Body:    DM Sans (geométrico, limpio — UI, párrafos)
+              → fonts.google.com/specimen/DM+Sans
+     Mono:    JetBrains Mono (labels técnicos, contadores)
+              → fonts.google.com/specimen/JetBrains+Mono
+  */
+  --font-display: "Cormorant Garamond", "Playfair Display", Georgia, serif;
+  --font-body:    "DM Sans", "Inter", system-ui, sans-serif;
+  --font-mono:    "JetBrains Mono", "Fira Code", ui-monospace, monospace;
+
+  /* Font Weights */
+  --weight-regular:   400;
+  --weight-medium:    500;
+  --weight-semibold:  600;
+  --weight-bold:      700;
+  --weight-extrabold: 800;
+
+  /* Font Sizes — fluid con clamp() */
+  --text-xs:      clamp(0.688rem,  0.64rem + 0.24vw, 0.813rem);
+  --text-sm:      clamp(0.875rem,  0.82rem + 0.28vw, 1rem);
+  --text-base:    clamp(1rem,      0.92rem + 0.40vw, 1.125rem);
+  --text-lg:      clamp(1.125rem,  1.02rem + 0.53vw, 1.375rem);
+  --text-xl:      clamp(1.25rem,   1.10rem + 0.75vw, 1.625rem);
+  --text-2xl:     clamp(1.5rem,    1.28rem + 1.10vw, 2rem);
+  --text-3xl:     clamp(2rem,      1.60rem + 2.00vw, 3rem);
+  --text-4xl:     clamp(2.5rem,    1.80rem + 3.50vw, 4.5rem);
+  --text-5xl:     clamp(3.5rem,    2.20rem + 6.50vw, 7rem);
+  --text-display: clamp(4.5rem,    2.00rem + 12.50vw, 11rem);
+
+  /* Line Heights */
+  --leading-none:    1;
+  --leading-tight:   1.05;
+  --leading-snug:    1.2;
+  --leading-normal:  1.5;
+  --leading-relaxed: 1.75;
+
+  /* Letter Spacing */
+  --tracking-tighter: -0.03em;
+  --tracking-tight:   -0.01em;
+  --tracking-normal:   0em;
+  --tracking-wide:     0.08em;
+  --tracking-wider:    0.16em;
+  --tracking-widest:   0.24em;   /* Para labels en all-caps como "GENERATIVE DESIGN" */
+
+
+  /* ─────────────────────────────────────────────
+     SPACING — escala base 4px
+  ───────────────────────────────────────────── */
+
+  --space-1:   0.25rem;   /*   4px */
+  --space-2:   0.5rem;    /*   8px */
+  --space-3:   0.75rem;   /*  12px */
+  --space-4:   1rem;      /*  16px */
+  --space-5:   1.25rem;   /*  20px */
+  --space-6:   1.5rem;    /*  24px */
+  --space-8:   2rem;      /*  32px */
+  --space-10:  2.5rem;    /*  40px */
+  --space-12:  3rem;      /*  48px */
+  --space-16:  4rem;      /*  64px */
+  --space-20:  5rem;      /*  80px */
+  --space-24:  6rem;      /*  96px */
+  --space-32:  8rem;      /* 128px */
+  --space-40:  10rem;     /* 160px */
+  --space-48:  12rem;     /* 192px */
+  --space-64:  16rem;     /* 256px */
+
+
+  /* ─────────────────────────────────────────────
+     LAYOUT
+  ───────────────────────────────────────────── */
+
+  --container-max:     1400px;
+  --container-padding: clamp(1.5rem, 5vw, 5rem);
+
+  --grid-cols:  12;
+  --grid-gap:   clamp(1rem, 2vw, 1.5rem);
+
+  /* Breakpoints — referencia (usar en @media queries)
+     xs:  375px
+     sm:  640px
+     md:  768px
+     lg:  1024px
+     xl:  1280px
+     2xl: 1536px
+  */
+
+
+  /* ─────────────────────────────────────────────
+     BORDER RADIUS
+  ───────────────────────────────────────────── */
+
+  --radius-sm:   4px;
+  --radius-md:   8px;
+  --radius-lg:   16px;
+  --radius-xl:   24px;
+  --radius-2xl:  32px;
+  --radius-full: 9999px;
+
+
+  /* ─────────────────────────────────────────────
+     SHADOWS
+  ───────────────────────────────────────────── */
+
+  --shadow-sm:        0 1px 2px rgba(0, 0, 0, 0.40);
+  --shadow-md:        0 4px 12px rgba(0, 0, 0, 0.50);
+  --shadow-lg:        0 8px 32px rgba(0, 0, 0, 0.60);
+  --shadow-xl:        0 16px 64px rgba(0, 0, 0, 0.70);
+  --shadow-accent:    0 0 24px var(--color-accent-glow);
+  --shadow-glow:      0 0 60px var(--color-accent-glow), 0 0 120px var(--color-accent-dim);
+
+  /* Glow del objeto 3D — para iluminación de Three.js */
+  --shadow-3d-blue:   0 0 80px rgba(37, 99, 235, 0.40);
+  --shadow-3d-warm:   0 0 80px rgba(249, 115, 22, 0.30);
+
+
+  /* ─────────────────────────────────────────────
+     TRANSITIONS & EASINGS
+  ───────────────────────────────────────────── */
+
+  /* Duraciones */
+  --duration-instant: 50ms;
+  --duration-fast:    150ms;
+  --duration-normal:  300ms;
+  --duration-slow:    600ms;
+  --duration-slower:  1000ms;
+  --duration-slowest: 1500ms;
+
+  /* Curvas de easing (estilo cinematográfico) */
+  --ease-out-expo:     cubic-bezier(0.16, 1, 0.30, 1);
+  --ease-in-expo:      cubic-bezier(0.70, 0, 0.84, 0);
+  --ease-in-out-expo:  cubic-bezier(0.87, 0, 0.13, 1);
+  --ease-spring:       cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out-cubic:    cubic-bezier(0.33, 1, 0.68, 1);
+  --ease-in-out-cubic: cubic-bezier(0.65, 0, 0.35, 1);
+
+
+  /* ─────────────────────────────────────────────
+     Z-INDEX
+  ───────────────────────────────────────────── */
+
+  --z-canvas:   -1;   /* Three.js canvas background */
+  --z-base:      0;
+  --z-raised:   10;
+  --z-dropdown: 100;
+  --z-sticky:   200;
+  --z-overlay:  300;
+  --z-modal:    400;
+  --z-toast:    500;
+}

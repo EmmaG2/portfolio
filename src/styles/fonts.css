@@ -1,0 +1,59 @@
+/* ─────────────────────────────────────────────
+   Cormorant Garamond — Variable Font
+   Weights: 300–700
+───────────────────────────────────────────── */
+@font-face {
+  font-family: "Cormorant Garamond";
+  src: url("../assets/fonts/Cormorant_Garamond/CormorantGaramond-VariableFont_wght.ttf") format("truetype");
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Cormorant Garamond";
+  src: url("../assets/fonts/Cormorant_Garamond/CormorantGaramond-Italic-VariableFont_wght.ttf") format("truetype");
+  font-weight: 300 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* ─────────────────────────────────────────────
+   DM Sans — Variable Font
+   Weights: 100–1000 | Optical size: 9–40
+───────────────────────────────────────────── */
+@font-face {
+  font-family: "DM Sans";
+  src: url("../assets/fonts/DM_Sans/DMSans-VariableFont_opsz,wght.ttf") format("truetype");
+  font-weight: 100 1000;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "DM Sans";
+  src: url("../assets/fonts/DM_Sans/DMSans-Italic-VariableFont_opsz,wght.ttf") format("truetype");
+  font-weight: 100 1000;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* ─────────────────────────────────────────────
+   JetBrains Mono — Variable Font
+   Weights: 100–800
+───────────────────────────────────────────── */
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("../assets/fonts/JetBrains_Mono/JetBrainsMono-VariableFont_wght.ttf") format("truetype");
+  font-weight: 100 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("../assets/fonts/JetBrains_Mono/JetBrainsMono-Italic-VariableFont_wght.ttf") format("truetype");
+  font-weight: 100 800;
+  font-style: italic;
+  font-display: swap;
+}
