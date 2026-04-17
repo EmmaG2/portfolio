@@ -1,0 +1,189 @@
+---
+import HeroTorus from '../HeroTorus.astro'
+import AccentLabel from '../ui/AccentLabel.astro'
+import ArrowLink from '../ui/ArrowLink.astro'
+---
+
+<section class="hero" aria-label="Introduction">
+  <HeroTorus />
+
+  <div class="hero__overlay" aria-hidden="true"></div>
+
+  <div class="hero__content">
+    <AccentLabel text="Full Stack Engineer" />
+
+    <h1 class="hero__name">Fernando<br />Granados</h1>
+
+    <p class="hero__tagline">I build products,<br />not just features.</p>
+
+    <p class="hero__sub">5 years shipping from idea to production.</p>
+
+    <div class="hero__cta">
+      <ArrowLink href="/work" label="See My Work" />
+      <a href="/about" class="hero__cta-secondary">About Me</a>
+    </div>
+  </div>
+
+  <div class="hero__index" aria-hidden="true">
+    <span>01</span>
+    <span class="hero__line"></span>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: var(--space-20);
+    overflow: hidden;
+  }
+
+  .hero__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      var(--color-bg) 5%,
+      rgba(11, 25, 41, 0.70) 38%,
+      transparent 65%
+    );
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .hero__content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-4);
+    padding-inline: var(--container-padding);
+    max-width: 700px;
+  }
+
+  .hero__name {
+    font-family: var(--font-display);
+    font-size: clamp(3.5rem, 12vw, 8rem);
+    font-weight: var(--weight-bold);
+    color: var(--color-text-primary);
+    line-height: var(--leading-none);
+    letter-spacing: var(--tracking-tight);
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .hero__tagline {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: var(--weight-regular);
+    color: rgba(255, 255, 255, 0.88);
+    line-height: var(--leading-snug);
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .hero__sub {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    letter-spacing: var(--tracking-wide);
+    color: rgba(255, 255, 255, 0.58);
+    margin: 0;
+    text-transform: uppercase;
+  }
+
+  .hero__cta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+    margin-top: var(--space-2);
+  }
+
+  .hero__cta-secondary {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.58);
+    text-decoration: none;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    transition: color var(--duration-fast) var(--ease-out-cubic);
+  }
+
+  .hero__cta-secondary:hover {
+    color: var(--color-text-primary);
+  }
+
+  .hero__index {
+    position: absolute;
+    left: var(--container-padding);
+    bottom: 50%;
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: rgba(255, 255, 255, 0.35);
+    letter-spacing: var(--tracking-wide);
+    z-index: 2;
+  }
+
+  .hero__line {
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.35);
+  }
+
+  /* ─── Tablet ─── */
+  @media (max-width: 768px) {
+    .hero {
+      padding-bottom: var(--space-16);
+    }
+
+    .hero__index {
+      display: none;
+    }
+  }
+
+  /* ─── Mobile ─── */
+  @media (max-width: 639px) {
+    .hero {
+      padding-bottom: var(--space-12);
+      align-items: flex-end;
+    }
+
+    .hero__overlay {
+      background: linear-gradient(
+        to top,
+        var(--color-bg) 10%,
+        rgba(11, 25, 41, 0.82) 48%,
+        transparent 72%
+      );
+    }
+
+    .hero__content {
+      gap: var(--space-3);
+    }
+
+    .hero__tagline {
+      font-size: var(--text-xl);
+    }
+
+    .hero__sub {
+      font-size: var(--text-xs);
+    }
+
+    .hero__cta {
+      gap: var(--space-6);
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  }
+</style>

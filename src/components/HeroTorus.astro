@@ -1,46 +1,50 @@
 ---
+
 ---
 
 <canvas id="hero-canvas" aria-hidden="true"></canvas>
 
 <script>
-  import * as THREE from 'three'
-  import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js'
+  import * as THREE from "three"
+  import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js"
 
-  const canvas = document.getElementById('hero-canvas') as HTMLCanvasElement
+  const canvas = document.getElementById("hero-canvas") as HTMLCanvasElement
 
   const scene = new THREE.Scene()
 
-  const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100)
-  camera.position.z = 6
+  const isMobile = window.innerWidth < 640
+
+  const camera = new THREE.PerspectiveCamera(
+    45,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    100,
+  )
+  camera.position.z = isMobile ? 9 : 6
 
   const renderer = new THREE.WebGLRenderer({
     canvas,
     antialias: true,
     alpha: true,
-    powerPreference: 'high-performance',
+    powerPreference: "high-performance",
   })
   renderer.setSize(window.innerWidth, window.innerHeight)
-  // Cap at 2× to avoid excessive fill-rate cost on high-DPI screens
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
   renderer.toneMapping = THREE.ACESFilmicToneMapping
   renderer.toneMappingExposure = 1.2
   renderer.outputColorSpace = THREE.SRGBColorSpace
 
-  // PMREM precomputes irradiance cubemaps for physically correct reflections
   const pmrem = new THREE.PMREMGenerator(renderer)
   scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture
   pmrem.dispose()
 
-  // Mouse rotation is applied at group level so torus self-rotation stays independent
   const group = new THREE.Group()
   scene.add(group)
 
-  // 64 radial segments (cross-section) × 256 tubular segments (ring smoothness)
   const geometry = new THREE.TorusGeometry(1.8, 0.62, 64, 256)
 
   const material = new THREE.MeshPhysicalMaterial({
-    color: new THREE.Color('#1A4A9E'),
+    color: new THREE.Color("#1A4A9E"),
     metalness: 0.1,
     roughness: 0.05,
     transmission: 0.4,
@@ -54,41 +58,44 @@
   })
 
   const torus = new THREE.Mesh(geometry, material)
-  // Slight tilt so the ring reads as dynamic rather than geometrically static
   torus.rotation.x = -Math.PI * 0.12
   torus.rotation.z = Math.PI * 0.04
   group.add(torus)
 
-  scene.add(new THREE.AmbientLight(0x0B1929, 1.0))
+  scene.add(new THREE.AmbientLight(0x0b1929, 1.0))
 
-  // Cold key light — top left
-  const blueLight = new THREE.DirectionalLight(0x4488FF, 5)
+  const blueLight = new THREE.DirectionalLight(0x4488ff, 5)
   blueLight.position.set(-4, 5, 3)
   scene.add(blueLight)
 
-  // Warm fill — right side
-  const orangeLight = new THREE.PointLight(0xFF7020, 12, 18)
+  const orangeLight = new THREE.PointLight(0xff7020, 12, 18)
   orangeLight.position.set(4.5, -0.5, 3)
   scene.add(orangeLight)
 
-  // Interior glow — creates depth inside the torus hole
-  const pinkLight = new THREE.PointLight(0xE040C0, 9, 14)
+  const pinkLight = new THREE.PointLight(0xe040c0, 9, 14)
   pinkLight.position.set(-2, -4, 2)
   scene.add(pinkLight)
 
-  // Purple rim backlight — separates torus from background
-  const rimLight = new THREE.DirectionalLight(0x8B5CF6, 2.5)
+  const rimLight = new THREE.DirectionalLight(0x8b5cf6, 2.5)
   rimLight.position.set(0, 0, -6)
   scene.add(rimLight)
 
-  const mouse = { x: 0, y: 0 }
-  const smoothMouse = { x: 0, y: 0 }
+  const pointer = { x: 0, y: 0 }
+  const smoothPointer = { x: 0, y: 0 }
 
   function onMouseMove(e: MouseEvent) {
-    mouse.x = (e.clientX / window.innerWidth - 0.5) * 2
-    mouse.y = (e.clientY / window.innerHeight - 0.5) * 2
+    pointer.x = (e.clientX / window.innerWidth - 0.5) * 2
+    pointer.y = (e.clientY / window.innerHeight - 0.5) * 2
   }
-  window.addEventListener('mousemove', onMouseMove)
+
+  function onTouchMove(e: TouchEvent) {
+    const touch = e.touches[0]
+    pointer.x = (touch.clientX / window.innerWidth - 0.5) * 2
+    pointer.y = (touch.clientY / window.innerHeight - 0.5) * 2
+  }
+
+  window.addEventListener("mousemove", onMouseMove)
+  window.addEventListener("touchmove", onTouchMove, { passive: true })
 
   const clock = new THREE.Clock()
   let rafId = 0
@@ -98,14 +105,13 @@
     const delta = clock.getDelta()
     const elapsed = clock.getElapsedTime()
 
-    // Exponential smoothing — factor 0.04 gives a slow, fluid lag behind the cursor
-    smoothMouse.x += (mouse.x - smoothMouse.x) * 0.04
-    smoothMouse.y += (mouse.y - smoothMouse.y) * 0.04
+    smoothPointer.x += (pointer.x - smoothPointer.x) * 0.04
+    smoothPointer.y += (pointer.y - smoothPointer.y) * 0.04
 
     torus.rotation.y += delta * 0.25
 
-    group.rotation.y = smoothMouse.x * 0.18
-    group.rotation.x = -smoothMouse.y * 0.10
+    group.rotation.y = smoothPointer.x * 0.18
+    group.rotation.x = -smoothPointer.y * 0.1
 
     const breathe = 1 + Math.sin(elapsed * 0.6) * 0.015
     group.scale.setScalar(breathe)
@@ -117,21 +123,29 @@
   function onResize() {
     const w = window.innerWidth
     const h = window.innerHeight
+    const mobile = w < 640
+
+    camera.position.z = mobile ? 9 : 6
     camera.aspect = w / h
     camera.updateProjectionMatrix()
     renderer.setSize(w, h)
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
   }
-  window.addEventListener('resize', onResize)
+  window.addEventListener("resize", onResize)
 
-  document.addEventListener('astro:before-swap', () => {
-    cancelAnimationFrame(rafId)
-    window.removeEventListener('mousemove', onMouseMove)
-    window.removeEventListener('resize', onResize)
-    geometry.dispose()
-    material.dispose()
-    renderer.dispose()
-  }, { once: true })
+  document.addEventListener(
+    "astro:before-swap",
+    () => {
+      cancelAnimationFrame(rafId)
+      window.removeEventListener("mousemove", onMouseMove)
+      window.removeEventListener("touchmove", onTouchMove)
+      window.removeEventListener("resize", onResize)
+      geometry.dispose()
+      material.dispose()
+      renderer.dispose()
+    },
+    { once: true },
+  )
 </script>
 
 <style>
@@ -144,4 +158,3 @@
     z-index: var(--z-canvas);
   }
 </style>
-```
