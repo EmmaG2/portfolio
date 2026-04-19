@@ -1,5 +1,5 @@
 ---
-
+/* src/components/HeroTorus.astro */
 ---
 
 <canvas id="hero-canvas" aria-hidden="true"></canvas>
@@ -10,28 +10,6 @@
   import * as THREE from 'three'
   import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js'
 
-  /* ═══════════════════════════════════════════
-     QUALITY TIER — detect device capability
-  ═══════════════════════════════════════════ */
-  const isMobile  = window.innerWidth < 640
-  const isLowEnd  = isMobile || (navigator.hardwareConcurrency ?? 8) <= 4
-
-  /* Geometry segments: high vs low poly */
-  const TUBE_SEG   = isLowEnd ? 32  : 64
-  const RADIAL_SEG = isLowEnd ? 128 : 256
-
-  /* ═══════════════════════════════════════════
-     HELPERS
-  ═══════════════════════════════════════════ */
-  const isDark = () =>
-    document.documentElement.getAttribute('data-theme') === 'dark'
-
-  const getAccentColor = (): string =>
-    localStorage.getItem('fg-accent') ?? (isDark() ? '#E85C73' : '#C47A0A')
-
-  /* ═══════════════════════════════════════════
-     THEME PRESETS
-  ═══════════════════════════════════════════ */
   interface LightDef {
     type: 'dir' | 'point'
     color: number
@@ -39,310 +17,187 @@
     pos: [number, number, number]
     dist?: number
   }
-
   interface Preset {
-    color: string
-    metalness: number
-    roughness: number
-    transmission: number   // 0 on low-end — removes costly refraction pass
-    thickness: number
-    clearcoat: number
-    clearcoatRoughness: number
-    iridescence: number    // 0 on low-end — removes expensive shader path
-    iridescenceIOR: number
-    iridescenceRange: [number, number]
-    envMapIntensity: number
-    ambientColor: number
-    ambientIntensity: number
+    color: string; metalness: number; roughness: number
+    transmission: number; thickness: number
+    clearcoat: number; clearcoatRoughness: number
+    iridescence: number; iridescenceIOR: number; iridescenceRange: [number, number]
+    envMapIntensity: number; ambientColor: number; ambientIntensity: number
     lights: LightDef[]
   }
 
-  /* High quality */
   const LIGHT_HQ: Preset = {
-    color: '#C47A0A', metalness: 0.15, roughness: 0.04,
-    transmission: 0.25, thickness: 2.0,
-    clearcoat: 1.0, clearcoatRoughness: 0.04,
-    iridescence: 0.8, iridescenceIOR: 1.7, iridescenceRange: [80, 500],
-    envMapIntensity: 2.0,
-    ambientColor: 0xfff8e8, ambientIntensity: 1.0,
+    color: '#C47A0A', metalness: 0.15, roughness: 0.08,
+    transmission: 0.22, thickness: 1.8,
+    clearcoat: 0.6, clearcoatRoughness: 0.08,
+    iridescence: 0.5, iridescenceIOR: 1.6, iridescenceRange: [80, 450],
+    envMapIntensity: 1.6, ambientColor: 0xfff8e8, ambientIntensity: 0.8,
     lights: [
-      { type: 'dir',   color: 0xfff0cc, intensity: 6,  pos: [-3,  6, 4]  },
-      { type: 'point', color: 0xff8800, intensity: 14, pos: [ 4, -1, 3], dist: 18 },
-      { type: 'point', color: 0xffe0a0, intensity: 6,  pos: [-2,  3, 2], dist: 12 },
-      { type: 'dir',   color: 0xc07020, intensity: 2,  pos: [ 0,  0,-5]  },
+      { type: 'dir',   color: 0xfff0cc, intensity: 5,  pos: [-3,  6, 4]  },
+      { type: 'point', color: 0xff8800, intensity: 10, pos: [ 4, -1, 3], dist: 15 },
     ],
   }
   const DARK_HQ: Preset = {
-    color: '#E85C73', metalness: 0.1, roughness: 0.05,
-    transmission: 0.4, thickness: 2.5,
-    clearcoat: 1.0, clearcoatRoughness: 0.05,
-    iridescence: 1.0, iridescenceIOR: 1.9, iridescenceRange: [80, 700],
-    envMapIntensity: 2.5,
-    ambientColor: 0x0a0000, ambientIntensity: 1.0,
+    color: '#E85C73', metalness: 0.1, roughness: 0.08,
+    transmission: 0.35, thickness: 2.2,
+    clearcoat: 0.8, clearcoatRoughness: 0.08,
+    iridescence: 0.7, iridescenceIOR: 1.8, iridescenceRange: [80, 600],
+    envMapIntensity: 2.0, ambientColor: 0x0a0000, ambientIntensity: 0.8,
     lights: [
-      { type: 'dir',   color: 0xff88aa, intensity: 6,   pos: [-4,  5,  3]  },
-      { type: 'point', color: 0xff3060, intensity: 14,  pos: [ 4, -0.5, 3], dist: 18 },
-      { type: 'point', color: 0xe040c0, intensity: 9,   pos: [-2, -4,  2], dist: 14 },
-      { type: 'dir',   color: 0x8b5cf6, intensity: 2.5, pos: [ 0,  0, -6]  },
+      { type: 'dir',   color: 0xff88aa, intensity: 5,   pos: [-4,  5,  3]  },
+      { type: 'point', color: 0xff3060, intensity: 10,  pos: [ 4, -0.5, 3], dist: 15 },
     ],
   }
 
-  /* Low quality — no transmission, no iridescence, fewer lights */
-  const LIGHT_LQ: Preset = {
-    color: '#C47A0A', metalness: 0.2, roughness: 0.1,
-    transmission: 0, thickness: 0,
-    clearcoat: 0.5, clearcoatRoughness: 0.1,
-    iridescence: 0, iridescenceIOR: 1.5, iridescenceRange: [100, 400],
-    envMapIntensity: 1.5,
-    ambientColor: 0xfff8e8, ambientIntensity: 1.2,
-    lights: [
-      { type: 'dir',   color: 0xfff0cc, intensity: 8,  pos: [-3, 6,  4]  },
-      { type: 'point', color: 0xff8800, intensity: 12, pos: [ 4, -1, 3], dist: 18 },
-    ],
-  }
-  const DARK_LQ: Preset = {
-    color: '#E85C73', metalness: 0.15, roughness: 0.1,
-    transmission: 0, thickness: 0,
-    clearcoat: 0.5, clearcoatRoughness: 0.1,
-    iridescence: 0, iridescenceIOR: 1.5, iridescenceRange: [100, 400],
-    envMapIntensity: 2.0,
-    ambientColor: 0x0a0000, ambientIntensity: 1.2,
-    lights: [
-      { type: 'dir',   color: 0xff88aa, intensity: 8,  pos: [-4, 5,  3]  },
-      { type: 'point', color: 0xff3060, intensity: 12, pos: [ 4, -0.5, 3], dist: 18 },
-    ],
-  }
+  function initTorus() {
+    const canvas = document.getElementById('hero-canvas') as HTMLCanvasElement | null
+    if (!canvas || canvas.dataset.init === '1') return
+    canvas.dataset.init = '1'
 
-  const getPreset = (dark: boolean): Preset =>
-    dark ? (isLowEnd ? DARK_LQ : DARK_HQ)
-         : (isLowEnd ? LIGHT_LQ : LIGHT_HQ)
+    const isMobile = window.innerWidth < 768
+    // Optimizamos segmentos: 128 radiales para nitidez sin lag
+    const TUBE_SEG   = isMobile ? 24 : 32
+    const RADIAL_SEG = isMobile ? 64 : 128
 
-  /* ═══════════════════════════════════════════
-     RENDERER SETUP
-  ═══════════════════════════════════════════ */
-  const canvas = document.getElementById('hero-canvas') as HTMLCanvasElement
+    const isDark = () => document.documentElement.getAttribute('data-theme') === 'dark'
+    const getAccentColor = (): string =>
+      localStorage.getItem('fg-accent') ?? (isDark() ? '#E85C73' : '#C47A0A')
 
-  const renderer = new THREE.WebGLRenderer({
-    canvas,
-    antialias: !isLowEnd,   // skip MSAA on low-end
-    alpha: true,
-    powerPreference: 'high-performance',
-  })
-  renderer.setSize(window.innerWidth, window.innerHeight)
-  /* Cap pixel ratio: 1 on mobile/low-end, 2 on desktop */
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, isLowEnd ? 1 : 2))
-  renderer.toneMapping = THREE.ACESFilmicToneMapping
-  renderer.toneMappingExposure = 1.2
-  renderer.outputColorSpace = THREE.SRGBColorSpace
+    const renderer = new THREE.WebGLRenderer({
+      canvas, 
+      antialias: !isMobile,
+      alpha: true, 
+      powerPreference: 'high-performance',
+    })
+    
+    renderer.setSize(window.innerWidth, window.innerHeight)
+    // Cap pixel ratio a 1.5 para evitar sobrecarga en pantallas Retina
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5))
+    renderer.toneMapping = THREE.ACESFilmicToneMapping
+    renderer.outputColorSpace = THREE.SRGBColorSpace
 
-  /* ═══════════════════════════════════════════
-     SCENE
-  ═══════════════════════════════════════════ */
-  const scene = new THREE.Scene()
-  const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100)
-  camera.position.z = isMobile ? 9 : 6
+    const scene  = new THREE.Scene()
+    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100)
+    camera.position.z = isMobile ? 8 : 6
 
-  /* Environment map — skip on very low-end to avoid PMREM cost */
-  if (!isLowEnd) {
+    // Generar entorno (RoomEnvironment)
     const pmrem = new THREE.PMREMGenerator(renderer)
-    scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture
+    const envTexture = pmrem.fromScene(new RoomEnvironment(), 0.04).texture
+    scene.environment = envTexture
     pmrem.dispose()
-  }
 
-  /* ─── Geometry (reduced segments on mobile) ─── */
-  const geometry = new THREE.TorusGeometry(1.8, 0.62, TUBE_SEG, RADIAL_SEG)
+    const geometry = new THREE.TorusGeometry(1.8, 0.62, TUBE_SEG, RADIAL_SEG)
+    const material = new THREE.MeshPhysicalMaterial({
+        transparent: true,
+        roughness: 0.08,
+        metalness: 0.1
+    })
+    
+    const group = new THREE.Group()
+    const torus = new THREE.Mesh(geometry, material)
+    torus.rotation.x = -Math.PI * 0.12
+    group.add(torus)
+    scene.add(group)
 
-  /* ─── Material ─── */
-  const material = new THREE.MeshPhysicalMaterial({})
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5)
+    scene.add(ambientLight)
+    
+    const managedLights: THREE.Light[] = []
 
-  const group = new THREE.Group()
-  const torus = new THREE.Mesh(geometry, material)
-  torus.rotation.x = -Math.PI * 0.12
-  torus.rotation.z = Math.PI * 0.04
-  group.add(torus)
-  scene.add(group)
-
-  /* ─── Lights (hot-swappable) ─── */
-  const ambientLight = new THREE.AmbientLight()
-  scene.add(ambientLight)
-  const managedLights: THREE.Light[] = []
-
-  function applyPreset(preset: Preset, accentOverride?: string) {
-    const col = accentOverride ?? preset.color
-    material.color.set(col)
-    material.metalness             = preset.metalness
-    material.roughness             = preset.roughness
-    material.transmission          = preset.transmission
-    material.thickness             = preset.thickness
-    material.clearcoat             = preset.clearcoat
-    material.clearcoatRoughness    = preset.clearcoatRoughness
-    material.iridescence           = preset.iridescence
-    material.iridescenceIOR        = preset.iridescenceIOR
-    material.iridescenceThicknessRange = preset.iridescenceRange
-    material.envMapIntensity       = preset.envMapIntensity
-    material.needsUpdate           = true
-
-    ambientLight.color.set(preset.ambientColor)
-    ambientLight.intensity = preset.ambientIntensity
-
-    managedLights.forEach(l => scene.remove(l))
-    managedLights.length = 0
-
-    for (const def of preset.lights) {
-      let light: THREE.Light
-      if (def.type === 'dir') {
-        const d = new THREE.DirectionalLight(def.color, def.intensity)
-        d.position.set(...def.pos)
-        light = d
-      } else {
-        const p = new THREE.PointLight(def.color, def.intensity, def.dist ?? 20)
-        p.position.set(...def.pos)
-        light = p
-      }
-      scene.add(light)
-      managedLights.push(light)
+    function applyPreset(preset: Preset, accentOverride?: string) {
+      const col = accentOverride ?? preset.color
+      material.color.set(col)
+      material.transmission = preset.transmission
+      material.thickness = preset.thickness
+      material.iridescence = preset.iridescence
+      material.envMapIntensity = preset.envMapIntensity
+      material.clearcoat = preset.clearcoat
+      material.clearcoatRoughness = preset.clearcoatRoughness
+      
+      managedLights.forEach(l => scene.remove(l))
+      managedLights.length = 0
+      
+      preset.lights.forEach(def => {
+        const light = def.type === 'dir' 
+          ? new THREE.DirectionalLight(def.color, def.intensity)
+          : new THREE.PointLight(def.color, def.intensity, def.dist)
+        light.position.set(...def.pos)
+        scene.add(light)
+        managedLights.push(light)
+      })
     }
-  }
 
-  applyPreset(getPreset(isDark()), getAccentColor())
+    applyPreset(isDark() ? DARK_HQ : LIGHT_HQ, getAccentColor())
 
-  /* ═══════════════════════════════════════════
-     ANIMATION
-  ═══════════════════════════════════════════ */
-  const pointer = { x: 0, y: 0 }
-  const smooth  = { x: 0, y: 0 }
+    const pointer = { x: 0, y: 0 }, smooth = { x: 0, y: 0 }
+    const clock = new THREE.Clock()
 
-  /* Frame-rate-independent smoothing factor */
-  const SMOOTH_SPEED = 2.4   // units/second; higher = snappier
-
-  /* 60 fps cap — skip frames faster than this */
-  const FRAME_MIN_MS = 1000 / 62
-
-  let lastFrameMs  = 0
-  let elapsed      = 0
-
-  function animate(timeMs: number) {
-    /* ── Frame cap ── */
-    const gap = timeMs - lastFrameMs
-    if (gap < FRAME_MIN_MS) return
-    const delta = Math.min(gap / 1000, 0.05) // clamp to avoid spiral-of-death
-    lastFrameMs = timeMs
-    elapsed += delta
-
-    /* ── Smooth pointer (frame-rate-independent) ── */
-    const alpha = 1 - Math.exp(-SMOOTH_SPEED * delta)
-    smooth.x += (pointer.x - smooth.x) * alpha
-    smooth.y += (pointer.y - smooth.y) * alpha
-
-    /* ── Transform ── */
-    torus.rotation.y  += delta * 0.25
-    group.rotation.y   = smooth.x * 0.18
-    group.rotation.x   = -smooth.y * 0.10
-    group.scale.setScalar(1 + Math.sin(elapsed * 0.6) * 0.015)
-
-    renderer.render(scene, camera)
-  }
-
-  renderer.setAnimationLoop(animate)
-
-  /* ═══════════════════════════════════════════
-     INPUT
-  ═══════════════════════════════════════════ */
-  function onMouseMove(e: MouseEvent) {
-    pointer.x = (e.clientX / window.innerWidth  - 0.5) * 2
-    pointer.y = (e.clientY / window.innerHeight - 0.5) * 2
-  }
-  function onTouchMove(e: TouchEvent) {
-    const t = e.touches[0]
-    pointer.x = (t.clientX / window.innerWidth  - 0.5) * 2
-    pointer.y = (t.clientY / window.innerHeight - 0.5) * 2
-  }
-  window.addEventListener('mousemove', onMouseMove)
-  window.addEventListener('touchmove', onTouchMove, { passive: true })
-
-  /* ═══════════════════════════════════════════
-     PAUSE / RESUME — technique from article
-  ═══════════════════════════════════════════ */
-
-  /* 1. Tab visibility */
-  function onVisibility() {
-    if (document.hidden) {
-      renderer.setAnimationLoop(null)
-    } else {
-      lastFrameMs = performance.now() // reset to avoid big delta on resume
-      renderer.setAnimationLoop(animate)
+    function animate() {
+      const delta = Math.min(clock.getDelta(), 0.1) // Cap delta para evitar tirones
+      
+      smooth.x += (pointer.x - smooth.x) * (delta * 2.5)
+      smooth.y += (pointer.y - smooth.y) * (delta * 2.5)
+      
+      torus.rotation.y += delta * 0.2
+      group.rotation.y = smooth.x * 0.15
+      group.rotation.x = -smooth.y * 0.1
+      
+      renderer.render(scene, camera)
     }
-  }
-  document.addEventListener('visibilitychange', onVisibility)
 
-  /* 2. IntersectionObserver — pause when hero is scrolled out of view */
-  const sentinel = document.getElementById('hero-sentinel')
-  let heroVisible = true
-  const io = new IntersectionObserver(
-    ([entry]) => {
-      heroVisible = entry.isIntersecting
-      if (heroVisible) {
-        lastFrameMs = performance.now()
+    renderer.setAnimationLoop(animate)
+
+    // ResizeObserver es más eficiente que el evento resize global
+    const resizeObserver = new ResizeObserver(() => {
+        const w = window.innerWidth, h = window.innerHeight
+        camera.aspect = w / h
+        camera.updateProjectionMatrix()
+        renderer.setSize(w, h)
+        // No es necesario actualizar el pixelRatio en cada resize a menos que cambie de monitor
+    })
+    resizeObserver.observe(document.body)
+
+    const onMove = (x: number, y: number) => {
+      pointer.x = (x / window.innerWidth - 0.5) * 2
+      pointer.y = (y / window.innerHeight - 0.5) * 2
+    }
+
+    window.addEventListener('mousemove', (e) => onMove(e.clientX, e.clientY))
+    window.addEventListener('touchmove', (e) => onMove(e.touches[0].clientX, e.touches[0].clientY), { passive: true })
+
+    const io = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        clock.start()
         renderer.setAnimationLoop(animate)
       } else {
         renderer.setAnimationLoop(null)
       }
-    },
-    { threshold: 0 },
-  )
-  if (sentinel) io.observe(sentinel)
+    })
+    const sentinel = document.getElementById('hero-sentinel')
+    if (sentinel) io.observe(sentinel)
 
-  /* ═══════════════════════════════════════════
-     RESIZE — debounced
-  ═══════════════════════════════════════════ */
-  let resizeTimer = 0
-  function onResize() {
-    clearTimeout(resizeTimer)
-    resizeTimer = window.setTimeout(() => {
-      const w = window.innerWidth
-      const h = window.innerHeight
-      camera.position.z = w < 640 ? 9 : 6
-      camera.aspect = w / h
-      camera.updateProjectionMatrix()
-      renderer.setSize(w, h)
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, isLowEnd ? 1 : 2))
-    }, 150)
-  }
-  window.addEventListener('resize', onResize)
+    // Reactividad
+    const onThemeChanged = (e: any) => applyPreset(e.detail.dark ? DARK_HQ : LIGHT_HQ, getAccentColor())
+    const onAccentChanged = (e: any) => { material.color.set(e.detail.color); material.needsUpdate = true }
+    
+    document.addEventListener('theme-changed', onThemeChanged as EventListener)
+    document.addEventListener('accent-changed', onAccentChanged as EventListener)
 
-  /* ═══════════════════════════════════════════
-     REACTIVITY — theme + accent
-  ═══════════════════════════════════════════ */
-  document.addEventListener('theme-changed', ((e: Event) => {
-    const dark = (e as CustomEvent<{ dark: boolean }>).detail.dark
-    applyPreset(getPreset(dark), getAccentColor())
-  }) as EventListener)
-
-  document.addEventListener('accent-changed', ((e: Event) => {
-    const color = (e as CustomEvent<{ color: string }>).detail.color
-    material.color.set(color)
-    material.needsUpdate = true
-  }) as EventListener)
-
-  /* ═══════════════════════════════════════════
-     CLEANUP
-  ═══════════════════════════════════════════ */
-  document.addEventListener(
-    'astro:before-swap',
-    () => {
+    document.addEventListener('astro:before-swap', () => {
       renderer.setAnimationLoop(null)
+      resizeObserver.disconnect()
       io.disconnect()
-      clearTimeout(resizeTimer)
-      window.removeEventListener('mousemove', onMouseMove)
-      window.removeEventListener('touchmove', onTouchMove)
-      window.removeEventListener('resize', onResize)
-      document.removeEventListener('visibilitychange', onVisibility)
       geometry.dispose()
       material.dispose()
+      envTexture.dispose()
       renderer.dispose()
-    },
-    { once: true },
-  )
+      document.removeEventListener('theme-changed', onThemeChanged as EventListener)
+      document.removeEventListener('accent-changed', onAccentChanged as EventListener)
+    }, { once: true })
+  }
+
+  initTorus()
+  document.addEventListener('astro:page-load', initTorus)
 </script>
 
 <style>
@@ -352,6 +207,7 @@
     display: block;
     width: 100%;
     height: 100%;
-    z-index: var(--z-canvas);
+    z-index: -1;
+    pointer-events: none;
   }
 </style>
