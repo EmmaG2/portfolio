@@ -1,0 +1,321 @@
+---
+import BaseLayout from '../components/layout/BaseLayout.astro'
+import SiteNav from '../components/layout/SiteNav.astro'
+import SiteFooter from '../components/layout/SiteFooter.astro'
+import AccentLabel from '../components/ui/AccentLabel.astro'
+import SectionTitle from '../components/ui/SectionTitle.astro'
+
+const upcoming = [
+  {
+    title: 'PostgreSQL Row Level Security is underused by application developers',
+    description: 'Most teams implement data isolation in application code — which means every new query path is a new potential hole. Here\'s why doing it at the database layer is almost always better.',
+    tags: ['PostgreSQL', 'Security', 'Backend'],
+    eta: 'Coming soon',
+  },
+  {
+    title: 'Why I stopped using ORMs for complex queries',
+    description: 'ORMs are great for CRUD. They\'re terrible for anything involving window functions, CTEs, or non-trivial aggregations. Here\'s my mental model for when to reach for raw SQL.',
+    tags: ['PostgreSQL', 'Node.js', 'Architecture'],
+    eta: 'Coming soon',
+  },
+  {
+    title: 'The real cost of optimistic UI (and how to do it safely)',
+    description: 'Optimistic updates make apps feel fast. They also create a class of bugs that only appear in production under real network conditions. Here\'s what I\'ve learned from shipping them at scale.',
+    tags: ['React', 'UX', 'Frontend'],
+    eta: 'Coming soon',
+  },
+  {
+    title: 'Building a deployment ledger that makes rollbacks trivial',
+    description: 'After enough rollback postmortems, I built an append-only deployment ledger into every system I work on. Here\'s the design and why it changed how our team deploys.',
+    tags: ['DevOps', 'PostgreSQL', 'CI/CD'],
+    eta: 'Coming soon',
+  },
+  {
+    title: 'FastAPI vs Express: my honest take after using both in production',
+    description: 'Not a benchmark — a real comparison from someone who has shipped production APIs in both. The answer depends heavily on what you\'re building and who\'s on your team.',
+    tags: ['FastAPI', 'Node.js', 'Backend'],
+    eta: 'Coming soon',
+  },
+  {
+    title: 'Multi-vendor payment splits in LATAM: what nobody tells you',
+    description: 'MercadoPago\'s sandbox does not reflect production behavior. OXXO Pay has quirks. IVA calculations vary by country. Here\'s everything I wish I had known before building Nexara\'s payment layer.',
+    tags: ['Payments', 'LATAM', 'Backend'],
+    eta: 'Coming soon',
+  },
+]
+---
+
+<BaseLayout
+  title="Blog"
+  description="Writing by Fernando Granados on full stack engineering, PostgreSQL, React, DevOps, and shipping products that work."
+>
+  <SiteNav slot="nav" currentPath={Astro.url.pathname} />
+
+  <div class="blog-page">
+    <header class="blog-page__header" data-reveal>
+      <AccentLabel text="Writing" />
+      <SectionTitle
+        heading="Things I've learned\nthe hard way."
+        subheading="Engineering notes on full stack development, PostgreSQL, DevOps, and shipping real products."
+      />
+    </header>
+
+    <div class="blog-page__notice" data-reveal>
+      <div class="notice-inner">
+        <span class="notice-icon" aria-hidden="true">✍</span>
+        <div>
+          <p class="notice-title">First posts coming soon</p>
+          <p class="notice-sub">
+            I'm working through a backlog of things I've been meaning to write down.
+            Drop your email below if you want a heads-up when they're out — no spam,
+            just the posts.
+          </p>
+          <form class="notice-form" action="#" method="post" aria-label="Email notification signup">
+            <input
+              type="email"
+              name="email"
+              placeholder="your@email.com"
+              aria-label="Email address"
+              required
+              class="notice-input"
+            />
+            <button type="submit" class="notice-btn">Notify me</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <section class="blog-page__upcoming" aria-labelledby="upcoming-heading">
+      <h2 id="upcoming-heading" class="upcoming-heading">
+        <AccentLabel text="In the pipeline" as="span" />
+      </h2>
+
+      <ul class="upcoming-list" role="list">
+        {upcoming.map((post, i) => (
+          <li class="upcoming-item" data-reveal>
+            <div class="upcoming-item__index" aria-hidden="true">
+              {String(i + 1).padStart(2, '0')}
+            </div>
+            <div class="upcoming-item__body">
+              <h3 class="upcoming-item__title">{post.title}</h3>
+              <p class="upcoming-item__description">{post.description}</p>
+              <div class="upcoming-item__footer">
+                <div class="upcoming-item__tags" role="list" aria-label="Tags">
+                  {post.tags.map((tag) => (
+                    <span class="tag" role="listitem">{tag}</span>
+                  ))}
+                </div>
+                <span class="upcoming-item__eta">{post.eta}</span>
+              </div>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </section>
+  </div>
+
+  <SiteFooter slot="footer" />
+</BaseLayout>
+
+<style>
+  .blog-page {
+    padding: calc(var(--space-20) + 80px) var(--container-padding) var(--space-32);
+    max-width: 900px;
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-20);
+  }
+
+  .blog-page__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  /* Notice banner */
+  .blog-page__notice {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    padding: var(--space-8);
+    background: color-mix(in srgb, var(--color-accent) 4%, var(--color-bg));
+  }
+
+  .notice-inner {
+    display: flex;
+    gap: var(--space-6);
+    align-items: flex-start;
+  }
+
+  .notice-icon {
+    font-size: 1.75rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .notice-title {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: var(--weight-semibold);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-2);
+  }
+
+  .notice-sub {
+    font-size: var(--text-base);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-relaxed);
+    margin: 0 0 var(--space-5);
+  }
+
+  .notice-form {
+    display: flex;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+  }
+
+  .notice-input {
+    flex: 1;
+    min-width: 220px;
+    padding: var(--space-3) var(--space-4);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    color: var(--color-text-primary);
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    outline: none;
+    transition: border-color var(--duration-fast) var(--ease-out-cubic);
+  }
+
+  .notice-input::placeholder {
+    color: var(--color-text-muted);
+  }
+
+  .notice-input:focus {
+    border-color: var(--color-accent);
+  }
+
+  .notice-btn {
+    padding: var(--space-3) var(--space-6);
+    background: var(--color-text-primary);
+    color: var(--color-bg);
+    border: none;
+    border-radius: var(--radius-full);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-wide);
+    cursor: pointer;
+    transition:
+      background var(--duration-fast) var(--ease-out-cubic),
+      color var(--duration-fast) var(--ease-out-cubic);
+  }
+
+  .notice-btn:hover {
+    background: var(--color-accent);
+    color: var(--color-bg);
+  }
+
+  /* Upcoming section */
+  .upcoming-heading {
+    margin: 0 0 var(--space-8);
+  }
+
+  .upcoming-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .upcoming-item {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: var(--space-6);
+    padding: var(--space-8) 0;
+    border-top: 1px solid var(--color-border-subtle);
+    transition: background var(--duration-fast) var(--ease-out-cubic);
+  }
+
+  .upcoming-item:last-child {
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+
+  .upcoming-item__index {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-accent);
+    letter-spacing: var(--tracking-widest);
+    padding-top: var(--space-1);
+  }
+
+  .upcoming-item__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .upcoming-item__title {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: var(--weight-semibold);
+    color: var(--color-text-primary);
+    margin: 0;
+    line-height: var(--leading-snug);
+  }
+
+  .upcoming-item__description {
+    font-size: var(--text-base);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-relaxed);
+    margin: 0;
+  }
+
+  .upcoming-item__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+  }
+
+  .upcoming-item__tags {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    padding: 2px var(--space-3);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-full);
+  }
+
+  .upcoming-item__eta {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 639px) {
+    .upcoming-item {
+      grid-template-columns: 1fr;
+      gap: var(--space-3);
+    }
+
+    .notice-inner {
+      flex-direction: column;
+      gap: var(--space-4);
+    }
+  }
+</style>

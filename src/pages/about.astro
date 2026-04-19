@@ -5,6 +5,7 @@ import SiteFooter from '../components/layout/SiteFooter.astro'
 import AccentLabel from '../components/ui/AccentLabel.astro'
 import SectionTitle from '../components/ui/SectionTitle.astro'
 import SkillGroup from '../components/about/SkillGroup.astro'
+import ExperienceTimeline from '../components/about/ExperienceTimeline.astro'
 import ArrowLink from '../components/ui/ArrowLink.astro'
 
 const skills = [
@@ -14,73 +15,97 @@ const skills = [
   },
   {
     area: 'Backend',
-    skills: ['Node.js', 'FastAPI (Python)', 'REST APIs', 'PostgreSQL', 'MySQL'],
+    skills: ['Node.js', 'FastAPI', 'REST APIs', 'PostgreSQL', 'Redis'],
   },
   {
     area: 'DevOps',
-    skills: ['Docker', 'CI/CD pipelines', 'Linux', 'Nginx'],
+    skills: ['Docker', 'GitHub Actions', 'Linux', 'Nginx', 'CI/CD pipelines'],
   },
   {
     area: 'Practices',
-    skills: ['Clean Code', 'Semantic HTML', 'Web Accessibility', 'SEO'],
+    skills: ['Clean Code', 'Semantic HTML', 'Accessibility', 'Performance'],
   },
 ]
 ---
 
 <BaseLayout
-  title="Full Stack Engineer — About"
-  description="Fernando Granados, Senior Full Stack Engineer from Durango, MX. 5 years shipping end-to-end products with React, Next.js, Node.js and FastAPI."
+  title="About"
+  description="Fernando Granados is a Senior Full Stack Engineer from Durango, MX with 5+ years shipping end-to-end products. Frontend-leaning full-stack with React, Next.js, Node.js and FastAPI."
 >
   <SiteNav slot="nav" currentPath={Astro.url.pathname} />
 
   <div class="about-page">
+
+    <!-- Header -->
     <header class="about-page__header" data-reveal>
       <AccentLabel text="About" />
-      <SectionTitle heading="I build products,\nnot just features." />
+      <SectionTitle heading="Engineer by craft,\nbuilder by instinct." />
     </header>
 
+    <!-- Bio -->
     <section class="about-page__bio" data-reveal aria-labelledby="bio-heading">
       <h2 id="bio-heading" class="sr-only">Biography</h2>
-
       <p>
-        I'm a Full Stack Engineer based in Durango, MX. Over the past 5 years I've
-        built products end-to-end — from database schema to production deployment —
-        mostly with TypeScript on both sides of the stack. Lately I've been expanding
-        into Python with FastAPI, and I'm genuinely enjoying it.
+        I'm Fernando — a Full Stack Engineer based in Durango, México. Over the
+        past 5+ years I've built products end-to-end: from data models and API
+        design to UI implementation and production deployment. Mostly TypeScript
+        on both sides of the stack, with a growing appetite for Python and FastAPI
+        on the backend.
       </p>
-
       <p>
-        I work best on small teams where I can own a feature completely: understand
-        the why, design the solution, ship it, and measure the outcome. I'm not
-        interested in moving tickets — I'm interested in moving metrics.
+        I work best on small, fast teams where I can own features completely —
+        understand the why, design the solution, ship it, and measure what changed.
+        I'm not interested in moving tickets. I'm interested in moving metrics.
       </p>
-
       <p>
         Boring infrastructure, interesting problems. Ships over hype. If the team
         cares about craft and speed in equal measure, I'm probably a good fit.
       </p>
     </section>
 
+    <!-- Experience Timeline -->
+    <section id="experience" aria-labelledby="exp-heading">
+      <h2 id="exp-heading" class="sr-only">Work Experience</h2>
+      <ExperienceTimeline />
+    </section>
+
+    <!-- Education -->
+    <section class="about-page__education" data-reveal aria-labelledby="edu-heading">
+      <AccentLabel text="Education" />
+      <div class="education-item">
+        <div class="education-item__main">
+          <p class="education-item__degree">B.S. Computer Science</p>
+          <p class="education-item__school">Instituto Tecnológico de Durango</p>
+        </div>
+        <p class="education-item__period">2019 — 2023</p>
+      </div>
+    </section>
+
+    <!-- Skills -->
     <section class="about-page__skills" data-reveal aria-labelledby="skills-heading">
-      <AccentLabel text="Skills" />
+      <AccentLabel text="Tech Stack" />
       <div class="skills-grid">
         {skills.map((group) => <SkillGroup area={group.area} skills={group.skills} />)}
       </div>
     </section>
 
+    <!-- How I work -->
     <section class="about-page__working" data-reveal aria-labelledby="working-heading">
       <AccentLabel text="How I Work" as="p" />
       <ul class="working-list">
-        <li>Async-first. I write things down so my teammates don't have to ask twice.</li>
-        <li>I've worked fully remote. Clear communication is a skill I take seriously.</li>
-        <li>Opinionated but not precious. I'll defend a decision, and I'll also drop it fast when I'm wrong.</li>
-        <li>I prefer to ship something imperfect and iterate than to plan forever.</li>
+        <li>Async-first. I write things down so teammates don't have to ask twice.</li>
+        <li>I've worked fully remote for 3 years. Clear written communication is a skill I take seriously.</li>
+        <li>Opinionated but not precious. I'll defend a decision, and I'll drop it fast when I'm wrong.</li>
+        <li>I prefer to ship something imperfect and iterate over planning forever.</li>
+        <li>I read postmortems recreationally. Understanding failure modes is as important as understanding how things work.</li>
       </ul>
     </section>
 
+    <!-- CTA -->
     <div class="about-page__cta" data-reveal>
       <ArrowLink href="/contact" label="Let's work together" />
     </div>
+
   </div>
 
   <SiteFooter slot="footer" />
@@ -93,7 +118,7 @@ const skills = [
     margin-inline: auto;
     display: flex;
     flex-direction: column;
-    gap: var(--space-20);
+    gap: var(--space-24);
   }
 
   .about-page__header {
@@ -115,6 +140,49 @@ const skills = [
     margin: 0;
   }
 
+  /* Education */
+  .about-page__education {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  .education-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: var(--space-5) 0;
+    border-top: 1px solid var(--color-border-subtle);
+    border-bottom: 1px solid var(--color-border-subtle);
+    gap: var(--space-4);
+    flex-wrap: wrap;
+  }
+
+  .education-item__degree {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: var(--weight-semibold);
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+
+  .education-item__school {
+    font-size: var(--text-base);
+    color: var(--color-text-secondary);
+    margin: var(--space-1) 0 0;
+  }
+
+  .education-item__period {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 0;
+    flex-shrink: 0;
+  }
+
+  /* Skills */
   .about-page__skills {
     display: flex;
     flex-direction: column;
@@ -127,6 +195,7 @@ const skills = [
     gap: var(--space-8);
   }
 
+  /* How I work */
   .about-page__working {
     display: flex;
     flex-direction: column;

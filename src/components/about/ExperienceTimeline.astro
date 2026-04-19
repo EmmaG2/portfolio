@@ -1,0 +1,315 @@
+---
+
+const experience = [
+  {
+    company: 'Helio Technologies',
+    url: '#',
+    role: 'Senior Full Stack Engineer',
+    period: '2023 — Present',
+    location: 'Remote · Full-time',
+    description:
+      'Leading full-stack development of an internal analytics platform used by 50+ financial analysts. Rebuilt the reporting pipeline from legacy Excel workflows to a real-time dashboard — cutting report generation time by 97%.',
+    highlights: [
+      'Designed and shipped a WebSocket-based real-time dashboard (Next.js + FastAPI)',
+      'Architected PostgreSQL RLS-based data isolation for compliance requirements',
+      'Reduced API p95 latency from 2.8s to 180ms via query optimization and Redis caching',
+    ],
+    tech: ['Next.js', 'TypeScript', 'FastAPI', 'PostgreSQL', 'Redis', 'Docker'],
+  },
+  {
+    company: 'Nexara Digital',
+    url: '#',
+    role: 'Full Stack Engineer',
+    period: '2022 — 2023',
+    location: 'Remote · Full-time',
+    description:
+      'Core engineer on a multi-vendor e-commerce platform targeting the LATAM market. Owned the payment integration layer (MercadoPago + Stripe), vendor dashboard, and multi-party payout system. Platform processed $2.4M GMV in its first year.',
+    highlights: [
+      'Built payment orchestration for multi-party splits, escrow, and automated refunds',
+      'Implemented PostgreSQL multi-tenancy via schema isolation for 1,800+ vendors',
+      'Designed optimistic UI pattern reducing catalog upload time from 12 min to under 60 sec',
+    ],
+    tech: ['React', 'Node.js', 'PostgreSQL', 'Redis', 'Stripe', 'MercadoPago', 'Docker'],
+  },
+  {
+    company: 'CreativeStack Agency',
+    url: '#',
+    role: 'Frontend Developer',
+    period: '2020 — 2022',
+    location: 'Durango, MX · Hybrid',
+    description:
+      'Frontend developer for a 12-person agency delivering web projects for SMB clients across Mexico and the US. Progressed from junior to leading frontend on 3-person project teams within 14 months.',
+    highlights: [
+      'Shipped 14 client projects in React and Next.js, from e-commerce to SaaS tools',
+      'Introduced component-based design system that cut frontend development time by 30%',
+      'Mentored 2 junior developers joining the team in 2021',
+    ],
+    tech: ['React', 'Next.js', 'TypeScript', 'CSS', 'Figma'],
+  },
+]
+---
+
+<section class="timeline" aria-labelledby="timeline-heading">
+  <div class="timeline__header">
+    <p class="timeline__label">Experience</p>
+  </div>
+
+  <ol class="timeline__list" role="list">
+    {experience.map((job, i) => (
+      <li class="timeline__item" data-reveal>
+        <div class="timeline__marker" aria-hidden="true">
+          <span class="timeline__dot"></span>
+          {i < experience.length - 1 && <span class="timeline__line"></span>}
+        </div>
+
+        <div class="timeline__content">
+          <div class="timeline__meta">
+            <p class="timeline__period">{job.period}</p>
+            <p class="timeline__location">{job.location}</p>
+          </div>
+
+          <div class="timeline__main">
+            <div class="timeline__title-row">
+              <h3 class="timeline__role">{job.role}</h3>
+              <span class="timeline__separator" aria-hidden="true">·</span>
+              <span class="timeline__company">{job.company}</span>
+            </div>
+
+            <p class="timeline__description">{job.description}</p>
+
+            <ul class="timeline__highlights" aria-label="Key achievements">
+              {job.highlights.map((h) => (
+                <li>{h}</li>
+              ))}
+            </ul>
+
+            <div class="timeline__tech" role="list" aria-label="Technologies used">
+              {job.tech.map((t) => (
+                <span class="tech-pill" role="listitem">{t}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </li>
+    ))}
+  </ol>
+</section>
+
+<style>
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  .timeline__header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  .timeline__label {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin: 0;
+  }
+
+  .timeline__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Each item: marker column + content column */
+  .timeline__item {
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    gap: var(--space-6);
+    position: relative;
+  }
+
+  /* Marker column */
+  .timeline__marker {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: var(--space-1);
+    flex-shrink: 0;
+  }
+
+  .timeline__dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+    transition: transform var(--duration-fast) var(--ease-spring);
+  }
+
+  .timeline__item:hover .timeline__dot {
+    transform: scale(1.4);
+  }
+
+  .timeline__line {
+    flex: 1;
+    width: 1px;
+    background: var(--color-border-subtle);
+    min-height: var(--space-12);
+  }
+
+  /* Content */
+  .timeline__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    padding-bottom: var(--space-16);
+  }
+
+  .timeline__item:last-child .timeline__content {
+    padding-bottom: 0;
+  }
+
+  .timeline__meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+  }
+
+  .timeline__period {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-accent);
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  .timeline__location {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  .timeline__main {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .timeline__title-row {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+  }
+
+  .timeline__role {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: var(--weight-bold);
+    color: var(--color-text-primary);
+    margin: 0;
+    line-height: var(--leading-tight);
+  }
+
+  .timeline__separator {
+    color: var(--color-text-muted);
+    font-size: var(--text-xl);
+  }
+
+  .timeline__company {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: var(--weight-regular);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-tight);
+  }
+
+  .timeline__description {
+    font-size: var(--text-base);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-relaxed);
+    margin: 0;
+    max-width: 620px;
+  }
+
+  .timeline__highlights {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .timeline__highlights li {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-relaxed);
+    padding-left: var(--space-5);
+    position: relative;
+    max-width: 600px;
+  }
+
+  .timeline__highlights li::before {
+    content: '↗';
+    position: absolute;
+    left: 0;
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    top: 3px;
+  }
+
+  .timeline__tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .tech-pill {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    padding: var(--space-1) var(--space-3);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-full);
+    transition:
+      border-color var(--duration-fast) var(--ease-out-cubic),
+      color var(--duration-fast) var(--ease-out-cubic);
+  }
+
+  .tech-pill:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+
+  @media (max-width: 639px) {
+    .timeline__item {
+      grid-template-columns: 20px 1fr;
+      gap: var(--space-4);
+    }
+
+    .timeline__title-row {
+      flex-direction: column;
+      gap: var(--space-1);
+    }
+
+    .timeline__separator {
+      display: none;
+    }
+  }
+</style>
