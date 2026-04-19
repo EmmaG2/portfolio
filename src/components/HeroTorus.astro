@@ -1,5 +1,5 @@
 ---
-/* src/components/HeroTorus.astro - OPTIMIZACIÓN MÁXIMA (MatCap Edition) */
+/* src/components/HeroTorus.astro - PULISHED MATCAP EDITION */
 ---
 
 <canvas id="hero-canvas" aria-hidden="true"></canvas>
@@ -8,12 +8,9 @@
 <script>
   import * as THREE from 'three'
 
-  /* ── MatCap Generator (The "Elite" Trick) ── */
-  // Instead of lights, we "draw" the material appearance once on a 256px circle.
-  // The GPU then just maps this circle to the geometry's normals. 
-  // Result: Stunning quality, 0 lighting calculation cost.
-  function generateMatcap(color: string, dark: boolean): THREE.CanvasTexture {
-    const size = 256
+  /* ── Studio-Grade MatCap Generator ── */
+  function generatePolishedMatcap(color: string, dark: boolean): THREE.CanvasTexture {
+    const size = 512 // Higher resolution for better quality
     const canvas = document.createElement('canvas')
     canvas.width = size; canvas.height = size
     const ctx = canvas.getContext('2d')
@@ -22,32 +19,56 @@
     const center = size / 2
     const radius = size / 2
 
-    // Base color
+    // 1. Base Gradient (Core Shadow for depth)
+    const baseGradient = ctx.createRadialGradient(center, center, radius * 0.4, center, center, radius)
+    const baseColor = new THREE.Color(color)
+    const shadowColor = baseColor.clone().multiplyScalar(dark ? 0.3 : 0.4)
+    baseGradient.addColorStop(0, color)
+    baseGradient.addColorStop(1, shadowColor.getStyle())
+    
     ctx.beginPath()
     ctx.arc(center, center, radius, 0, Math.PI * 2)
-    ctx.fillStyle = color
+    ctx.fillStyle = baseGradient
     ctx.fill()
 
-    // Main highlight (The "Shiny" spot)
-    const highlight = ctx.createRadialGradient(center * 0.7, center * 0.7, 0, center * 0.7, center * 0.7, radius * 0.8)
-    highlight.addColorStop(0, dark ? 'rgba(255, 255, 255, 0.4)' : 'rgba(255, 255, 255, 0.6)')
-    highlight.addColorStop(1, 'rgba(255, 255, 255, 0)')
-    ctx.fillStyle = highlight
+    // 2. Primary Highlight (Key Light)
+    const keyLight = ctx.createRadialGradient(center * 0.6, center * 0.6, 0, center * 0.6, center * 0.6, radius * 0.7)
+    keyLight.addColorStop(0, 'rgba(255, 255, 255, 0.6)')
+    keyLight.addColorStop(1, 'rgba(255, 255, 255, 0)')
+    ctx.fillStyle = keyLight
     ctx.fill()
 
-    // Rim light (The "Glow" on edges)
-    const rim = ctx.createRadialGradient(center, center, radius * 0.8, center, center, radius)
-    rim.addColorStop(0, 'rgba(0, 0, 0, 0)')
-    rim.addColorStop(1, dark ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.1)')
+    // 3. Specular Spot (Sharp light reflect)
+    const specular = ctx.createRadialGradient(center * 0.55, center * 0.55, 0, center * 0.55, center * 0.55, radius * 0.2)
+    specular.addColorStop(0, 'rgba(255, 255, 255, 0.9)')
+    specular.addColorStop(1, 'rgba(255, 255, 255, 0)')
+    ctx.fillStyle = specular
+    ctx.fill()
+
+    // 4. Rim Light (Fresnel Effect - Edge glow)
+    const rim = ctx.createRadialGradient(center, center, radius * 0.85, center, center, radius)
+    rim.addColorStop(0, 'rgba(255, 255, 255, 0)')
+    rim.addColorStop(0.9, dark ? 'rgba(255, 255, 255, 0.3)' : 'rgba(255, 255, 255, 0.5)')
+    rim.addColorStop(1, 'rgba(255, 255, 255, 0.1)')
     ctx.fillStyle = rim
     ctx.fill()
 
-    // Glassy refraction simulation (Bottom highlight)
-    const bottomLight = ctx.createRadialGradient(center * 1.3, center * 1.3, 0, center * 1.3, center * 1.3, radius * 0.6)
-    bottomLight.addColorStop(0, dark ? 'rgba(255, 255, 255, 0.15)' : 'rgba(255, 255, 255, 0.3)')
-    bottomLight.addColorStop(1, 'rgba(0, 0, 0, 0)')
-    ctx.fillStyle = bottomLight
+    // 5. Fill Light (Soft light from bottom)
+    const fillLight = ctx.createRadialGradient(center * 1.4, center * 1.4, 0, center * 1.4, center * 1.4, radius * 0.8)
+    fillLight.addColorStop(0, dark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.2)')
+    fillLight.addColorStop(1, 'rgba(0, 0, 0, 0)')
+    ctx.fillStyle = fillLight
     ctx.fill()
+
+    // 6. Texture/Noise (Adds "grain" and character)
+    ctx.globalAlpha = 0.04
+    for (let i = 0; i < 10000; i++) {
+      const x = Math.random() * size
+      const y = Math.random() * size
+      ctx.fillStyle = Math.random() > 0.5 ? '#fff' : '#000'
+      ctx.fillRect(x, y, 1.2, 1.2)
+    }
+    ctx.globalAlpha = 1.0
 
     const texture = new THREE.CanvasTexture(canvas)
     texture.colorSpace = THREE.SRGBColorSpace
@@ -60,19 +81,15 @@
     canvas.dataset.init = '1'
 
     const isMobile = window.innerWidth < 768
-    // High-quality geometry but optimized segments
     const TUBE_SEG   = isMobile ? 32 : 48
-    const RADIAL_SEG = isMobile ? 96 : 160
+    const RADIAL_SEG = isMobile ? 128 : 192
 
     const isDark = () => document.documentElement.getAttribute('data-theme') === 'dark'
     const getAccentColor = (): string => 
       localStorage.getItem('fg-accent') ?? (isDark() ? '#E85C73' : '#C47A0A')
 
     const renderer = new THREE.WebGLRenderer({
-      canvas, 
-      antialias: true, // With MatCap, we can afford antialiasing easily
-      alpha: true, 
-      powerPreference: 'high-performance'
+      canvas, antialias: true, alpha: true, powerPreference: 'high-performance'
     })
     
     renderer.setSize(window.innerWidth, window.innerHeight)
@@ -80,11 +97,14 @@
     renderer.outputColorSpace = THREE.SRGBColorSpace
 
     const scene  = new THREE.Scene()
-    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100)
-    camera.position.z = isMobile ? 8 : 6
+    const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 100)
+    camera.position.z = isMobile ? 8.5 : 6
 
     const geometry = new THREE.TorusGeometry(1.8, 0.62, TUBE_SEG, RADIAL_SEG)
-    const material = new THREE.MeshMatcapMaterial({ transparent: true, opacity: 0.95 })
+    const material = new THREE.MeshMatcapMaterial({ 
+        transparent: true, 
+        opacity: 0.98
+    })
     
     const group = new THREE.Group()
     const torus = new THREE.Mesh(geometry, material)
@@ -92,8 +112,7 @@
     group.add(torus)
     scene.add(group)
 
-    // Initial MatCap generation
-    let currentMatcap = generateMatcap(getAccentColor(), isDark())
+    let currentMatcap = generatePolishedMatcap(getAccentColor(), isDark())
     material.matcap = currentMatcap
 
     const pointer = { x: 0, y: 0 }, smooth = { x: 0, y: 0 }
@@ -101,14 +120,11 @@
 
     function animate() {
       const delta = Math.min(clock.getDelta(), 0.1)
-      
-      smooth.x += (pointer.x - smooth.x) * (delta * 3)
-      smooth.y += (pointer.y - smooth.y) * (delta * 3)
-      
-      torus.rotation.y += delta * 0.25
+      smooth.x += (pointer.x - smooth.x) * (delta * 2.5)
+      smooth.y += (pointer.y - smooth.y) * (delta * 2.5)
+      torus.rotation.y += delta * 0.22
       group.rotation.y = smooth.x * 0.18
       group.rotation.x = -smooth.y * 0.1
-      
       renderer.render(scene, camera)
     }
 
@@ -136,9 +152,8 @@
     const sentinel = document.getElementById('hero-sentinel')
     if (sentinel) io.observe(sentinel)
 
-    // Reactivity (Dynamic MatCap generation on-the-fly)
     const updateLook = () => {
-      const newMatcap = generateMatcap(getAccentColor(), isDark())
+      const newMatcap = generatePolishedMatcap(getAccentColor(), isDark())
       if (material.matcap) material.matcap.dispose()
       material.matcap = newMatcap
       material.needsUpdate = true
@@ -149,10 +164,8 @@
 
     document.addEventListener('astro:before-swap', () => {
       renderer.setAnimationLoop(null)
-      resizeObserver.disconnect()
-      io.disconnect()
-      geometry.dispose()
-      material.dispose()
+      resizeObserver.disconnect(); io.disconnect()
+      geometry.dispose(); material.dispose()
       if (material.matcap) material.matcap.dispose()
       renderer.dispose()
       document.removeEventListener('theme-changed', updateLook)
