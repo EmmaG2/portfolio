@@ -22,7 +22,15 @@ const year = new Date().getFullYear()
       >
         LinkedIn
       </a>
-      <a href="mailto:23041076@itdurango.edu.mx">Email</a>
+      <button id="footer-email-btn" type="button" class="footer-email-btn">Email</button>
+      <script>
+        const fb = document.getElementById('footer-email-btn')
+        if (fb) {
+          fb.addEventListener('click', () => {
+            window.location.href = 'mailto:' + 'fergranados.dev' + '\x40' + 'outlook.com'
+          })
+        }
+      </script>
     </nav>
   </div>
 </footer>
@@ -67,6 +75,23 @@ const year = new Date().getFullYear()
   }
 
   .footer-social a:hover {
+    color: var(--color-accent);
+  }
+
+  .footer-email-btn {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    transition: color var(--duration-fast) var(--ease-out-cubic);
+  }
+
+  .footer-email-btn:hover {
     color: var(--color-accent);
   }
 </style>

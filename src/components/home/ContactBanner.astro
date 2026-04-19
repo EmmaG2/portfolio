@@ -22,9 +22,24 @@
           <path d="M3.75 9h10.5M10.5 5.25L14.25 9l-3.75 3.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </a>
-      <a href="mailto:23041076@itdurango.edu.mx" class="contact-banner__email">
-        23041076@itdurango.edu.mx
-      </a>
+      <button class="contact-banner__email" id="contact-banner-mail" type="button">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <rect x="2" y="4" width="20" height="16" rx="2" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M2 7l10 7 10-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        Send me an email
+      </button>
+
+      <script>
+        const btn = document.getElementById('contact-banner-mail')
+        if (btn) {
+          const u = 'fergranados.dev'
+          const d = 'outlook.com'
+          btn.addEventListener('click', () => {
+            window.location.href = 'mailto:' + u + '@' + d
+          })
+        }
+      </script>
     </div>
   </div>
 
@@ -142,11 +157,17 @@
   }
 
   .contact-banner__email {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
     font-family: var(--font-mono);
     font-size: var(--text-sm);
     letter-spacing: var(--tracking-wide);
     color: var(--color-text-muted);
-    text-decoration: none;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
     transition: color var(--duration-fast) var(--ease-out-cubic);
   }
 
