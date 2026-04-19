@@ -6,16 +6,18 @@
 <div id="hero-sentinel" aria-hidden="true" style="position:absolute;top:0;left:0;width:1px;height:100vh;pointer-events:none;"></div>
 
 <script>
-  import * as THREE from 'three'
-  import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js'
-
-  function initTorus() {
+  async function initTorus() {
     const canvas = document.getElementById('hero-canvas') as HTMLCanvasElement | null
     if (!canvas || canvas.dataset.init === '1') return
-    canvas.dataset.init = '1'
+    
+    // Defer the heavy Three.js import until we actually need to init
+    const [THREE, { RoomEnvironment }] = await Promise.all([
+      import('three'),
+      import('three/examples/jsm/environments/RoomEnvironment.js')
+    ]);
 
+    canvas.dataset.init = '1'
     const isMobile = window.innerWidth < 768
-    // High-poly geometry for total smoothness
     const TUBE_SEG   = isMobile ? 32 : 48
     const RADIAL_SEG = isMobile ? 128 : 256
 
@@ -31,7 +33,6 @@
     })
     
     renderer.setSize(window.innerWidth, window.innerHeight)
-    // 1.5 is the "sweet spot" for high quality without lag
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5))
     renderer.toneMapping = THREE.ACESFilmicToneMapping
     renderer.toneMappingExposure = 1.2
@@ -41,7 +42,6 @@
     const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 100)
     camera.position.z = isMobile ? 8.5 : 6.5
 
-    // Essential for that pro reflection look (simulates windows/lights)
     const pmrem = new THREE.PMREMGenerator(renderer)
     const envTexture = pmrem.fromScene(new RoomEnvironment(), 0.04).texture
     scene.environment = envTexture
@@ -51,13 +51,13 @@
     const material = new THREE.MeshPhysicalMaterial({ 
         color: getAccentColor(),
         metalness: 0.1,
-        roughness: 0.02, // Ultra sharp reflections
-        transmission: 0.25, // Glassy look
-        thickness: 2.0, // Refraction depth
-        ior: 1.5, // Index of Refraction (Glass)
-        clearcoat: 1.0, // Extra shiny layer
+        roughness: 0.02,
+        transmission: 0.25,
+        thickness: 2.0,
+        ior: 1.5,
+        clearcoat: 1.0,
         clearcoatRoughness: 0.02,
-        envMapIntensity: 2.5, // Make reflections pop
+        envMapIntensity: 2.5,
     })
     
     const group = new THREE.Group()
@@ -66,7 +66,6 @@
     group.add(torus)
     scene.add(group)
 
-    // Minimal high-intensity lighting to complement environment
     const ambientLight = new THREE.AmbientLight(0xffffff, 1.0)
     scene.add(ambientLight)
     
@@ -83,14 +82,11 @@
 
     function animate() {
       const delta = Math.min(clock.getDelta(), 0.1)
-      
       smooth.x += (pointer.x - smooth.x) * (delta * 2.5)
       smooth.y += (pointer.y - smooth.y) * (delta * 2.5)
-      
       torus.rotation.y += delta * 0.2
       group.rotation.y = smooth.x * 0.15
       group.rotation.x = -smooth.y * 0.1
-      
       renderer.render(scene, camera)
     }
 
@@ -118,7 +114,6 @@
     const sentinel = document.getElementById('hero-sentinel')
     if (sentinel) io.observe(sentinel)
 
-    // Reactivity
     const updateLook = () => {
       material.color.set(getAccentColor())
       material.needsUpdate = true
@@ -136,8 +131,17 @@
     }, { once: true })
   }
 
-  initTorus()
-  document.addEventListener('astro:page-load', initTorus)
+  // Load when idle to prioritize FCP
+  const loadTorus = () => {
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(() => initTorus())
+    } else {
+      setTimeout(initTorus, 200)
+    }
+  }
+
+  loadTorus()
+  document.addEventListener('astro:page-load', loadTorus)
 </script>
 
 <style>
