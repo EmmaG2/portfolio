@@ -1,7 +1,5 @@
 ---
 import HeroTorus from '../HeroTorus.astro'
-import AccentLabel from '../ui/AccentLabel.astro'
-import ArrowLink from '../ui/ArrowLink.astro'
 ---
 
 <section class="hero" aria-label="Introduction">
@@ -10,25 +8,25 @@ import ArrowLink from '../ui/ArrowLink.astro'
   <div class="hero__overlay" aria-hidden="true"></div>
 
   <div class="hero__content">
-    <AccentLabel text="Full Stack Engineer" />
+    <p class="hero__label">Software Engineer</p>
 
-    <h1 class="hero__name">Fernando<br />Granados</h1>
+    <h1 class="hero__name">
+      <span class="hero__name-line">Fernando</span>
+      <span class="hero__name-line">Granados</span>
+    </h1>
 
-    <p class="hero__tagline">I build products,<br />not just features.</p>
+    <p class="hero__tagline">Building digital experiences for 5+ years</p>
 
-    <p class="hero__sub">5 years shipping from idea to production.</p>
-
-    <div class="hero__cta">
-      <ArrowLink href="/work" label="See My Work" />
-      <a href="/about" class="hero__cta-secondary">About Me</a>
+    <div class="hero__scroll" aria-hidden="true">
+      <svg class="hero__scroll-icon" width="24" height="36" viewBox="0 0 24 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="1" y="1" width="22" height="34" rx="11" stroke="currentColor" stroke-width="1.5"/>
+        <rect class="hero__scroll-dot" x="11" y="8" width="2" height="6" rx="1" fill="currentColor"/>
+      </svg>
     </div>
   </div>
-
-  <div class="hero__index" aria-hidden="true">
-    <span>01</span>
-    <span class="hero__line"></span>
-  </div>
 </section>
+
+<div class="hero__separator" aria-hidden="true"></div>
 
 <style>
   .hero {
@@ -37,23 +35,25 @@ import ArrowLink from '../ui/ArrowLink.astro'
     display: flex;
     align-items: flex-end;
     justify-content: center;
-    padding-bottom: var(--space-20);
     overflow: hidden;
   }
 
+  /* Gradient overlay — light/dark adaptive */
   .hero__overlay {
     position: absolute;
     inset: 0;
     background: linear-gradient(
       to top,
-      var(--color-bg) 5%,
-      rgba(11, 25, 41, 0.70) 38%,
-      transparent 65%
+      var(--color-bg) 0%,
+      color-mix(in srgb, var(--color-bg) 70%, transparent) 30%,
+      color-mix(in srgb, var(--color-bg) 20%, transparent) 55%,
+      transparent 72%
     );
     pointer-events: none;
     z-index: 1;
   }
 
+  /* Content block */
   .hero__content {
     position: relative;
     z-index: 2;
@@ -61,129 +61,102 @@ import ArrowLink from '../ui/ArrowLink.astro'
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--space-4);
+    gap: var(--space-3);
     padding-inline: var(--container-padding);
-    max-width: 700px;
+    padding-bottom: var(--space-10);
+    max-width: 900px;
+    width: 100%;
   }
 
+  /* "SOFTWARE ENGINEER" label */
+  .hero__label {
+    font-family: var(--font-mono);
+    font-size: clamp(0.65rem, 1vw, 0.78rem);
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  /* Name — massive display */
   .hero__name {
     font-family: var(--font-display);
-    font-size: clamp(3.5rem, 12vw, 8rem);
     font-weight: var(--weight-bold);
+    font-size: clamp(4.5rem, 15vw, 11rem);
+    line-height: 0.92;
+    letter-spacing: -0.01em;
     color: var(--color-text-primary);
-    line-height: var(--leading-none);
-    letter-spacing: var(--tracking-tight);
     margin: 0;
-    text-wrap: balance;
-  }
-
-  .hero__tagline {
-    font-family: var(--font-display);
-    font-size: var(--text-2xl);
-    font-weight: var(--weight-regular);
-    color: rgba(255, 255, 255, 0.88);
-    line-height: var(--leading-snug);
-    margin: 0;
-    text-wrap: balance;
-  }
-
-  .hero__sub {
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    letter-spacing: var(--tracking-wide);
-    color: rgba(255, 255, 255, 0.58);
-    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-transform: uppercase;
   }
 
-  .hero__cta {
-    display: flex;
-    align-items: center;
-    gap: var(--space-8);
-    margin-top: var(--space-2);
-  }
-
-  .hero__cta-secondary {
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    letter-spacing: var(--tracking-wide);
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.58);
-    text-decoration: none;
-    min-height: 44px;
-    display: inline-flex;
-    align-items: center;
-    transition: color var(--duration-fast) var(--ease-out-cubic);
-  }
-
-  .hero__cta-secondary:hover {
-    color: var(--color-text-primary);
-  }
-
-  .hero__index {
-    position: absolute;
-    left: var(--container-padding);
-    bottom: 50%;
-    display: flex;
-    align-items: center;
-    gap: var(--space-3);
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    color: rgba(255, 255, 255, 0.35);
-    letter-spacing: var(--tracking-wide);
-    z-index: 2;
-  }
-
-  .hero__line {
+  .hero__name-line {
     display: block;
-    width: 40px;
+  }
+
+  /* Tagline */
+  .hero__tagline {
+    font-family: var(--font-body);
+    font-size: clamp(0.875rem, 1.5vw, 1.1rem);
+    font-weight: var(--weight-regular);
+    color: var(--color-text-secondary);
+    margin: var(--space-1) 0 0;
+    letter-spacing: 0.01em;
+  }
+
+  /* Scroll indicator */
+  .hero__scroll {
+    margin-top: var(--space-6);
+    color: var(--color-text-muted);
+  }
+
+  .hero__scroll-icon {
+    display: block;
+  }
+
+  .hero__scroll-dot {
+    animation: scroll-bounce 1.8s var(--ease-in-out-cubic) infinite;
+    transform-origin: top center;
+  }
+
+  @keyframes scroll-bounce {
+    0%, 100% { transform: translateY(0); opacity: 1; }
+    50%       { transform: translateY(8px); opacity: 0.4; }
+  }
+
+  /* Bottom separator */
+  .hero__separator {
     height: 1px;
-    background: rgba(255, 255, 255, 0.35);
+    background: var(--color-border-subtle);
+    max-width: var(--container-max);
+    margin-inline: auto;
+    margin-inline: var(--container-padding);
   }
 
   /* ─── Tablet ─── */
   @media (max-width: 768px) {
-    .hero {
-      padding-bottom: var(--space-16);
+    .hero__name {
+      font-size: clamp(3.5rem, 18vw, 7rem);
     }
 
-    .hero__index {
-      display: none;
+    .hero__content {
+      padding-bottom: var(--space-8);
     }
   }
 
   /* ─── Mobile ─── */
-  @media (max-width: 639px) {
-    .hero {
-      padding-bottom: var(--space-12);
-      align-items: flex-end;
-    }
-
-    .hero__overlay {
-      background: linear-gradient(
-        to top,
-        var(--color-bg) 10%,
-        rgba(11, 25, 41, 0.82) 48%,
-        transparent 72%
-      );
-    }
-
+  @media (max-width: 480px) {
     .hero__content {
-      gap: var(--space-3);
+      gap: var(--space-2);
+      padding-bottom: var(--space-6);
     }
 
-    .hero__tagline {
-      font-size: var(--text-xl);
-    }
-
-    .hero__sub {
-      font-size: var(--text-xs);
-    }
-
-    .hero__cta {
-      gap: var(--space-6);
-      flex-wrap: wrap;
-      justify-content: center;
+    .hero__scroll {
+      margin-top: var(--space-4);
     }
   }
 </style>
