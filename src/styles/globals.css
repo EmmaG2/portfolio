@@ -17,6 +17,7 @@ html {
 
 body {
   margin: 0;
+  min-height: 100vh;
   min-height: 100dvh;
   font-family: var(--font-body);
   font-size: var(--text-base);
@@ -27,10 +28,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   
-  /* Logical properties for global layout */
   overflow-x: hidden;
-  display: flex;
-  flex-direction: column;
 
   transition:
     background-color var(--duration-normal) var(--ease-out-cubic),
@@ -39,7 +37,8 @@ body {
 
 /* 2. Modern Layout & Typography Utilities */
 main {
-  flex-grow: 1;
+  /* Ensure content starts after the fixed header */
+  padding-top: var(--space-20);
 }
 
 h1, h2, h3, h4 {
@@ -50,7 +49,7 @@ h1, h2, h3, h4 {
 }
 
 p {
-  max-width: 65ch; /* Ideal reading measure */
+  max-width: 65ch;
   text-wrap: pretty;
 }
 
@@ -72,6 +71,7 @@ button {
   border: none;
   background: none;
   padding: 0;
+  color: inherit;
 }
 
 /* 3. Global Container Utility */
@@ -79,7 +79,7 @@ button {
   inline-size: 100%;
   max-inline-size: var(--container-max);
   margin-inline: auto;
-  padding-inline: var(--container-padding);
+  padding-inline: max(1.25rem, 5vw);
 }
 
 /* 4. Accessibility & Reveals */
