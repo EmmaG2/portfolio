@@ -44,22 +44,33 @@
   </div>
 
   <div class="contact-banner__strip" aria-hidden="true">
-    <span>FULL STACK ENGINEER</span>
-    <span>·</span>
-    <span>AVAILABLE FOR HIRE</span>
-    <span>·</span>
-    <span>REMOTE WORLDWIDE</span>
-    <span>·</span>
-    <span>FULL STACK ENGINEER</span>
-    <span>·</span>
-    <span>AVAILABLE FOR HIRE</span>
-    <span>·</span>
-    <span>REMOTE WORLDWIDE</span>
-    <span>·</span>
-    <span>FULL STACK ENGINEER</span>
-    <span>·</span>
-    <span>AVAILABLE FOR HIRE</span>
-    <span>·</span>
+    <div class="contact-banner__track">
+      <span>FULL STACK ENGINEER</span>
+      <span class="dot">·</span>
+      <span>AVAILABLE FOR HIRE</span>
+      <span class="dot">·</span>
+      <span>REMOTE WORLDWIDE</span>
+      <span class="dot">·</span>
+      <span>FULL STACK ENGINEER</span>
+      <span class="dot">·</span>
+      <span>AVAILABLE FOR HIRE</span>
+      <span class="dot">·</span>
+      <span>REMOTE WORLDWIDE</span>
+      <span class="dot">·</span>
+      <!-- duplicate for seamless loop -->
+      <span>FULL STACK ENGINEER</span>
+      <span class="dot">·</span>
+      <span>AVAILABLE FOR HIRE</span>
+      <span class="dot">·</span>
+      <span>REMOTE WORLDWIDE</span>
+      <span class="dot">·</span>
+      <span>FULL STACK ENGINEER</span>
+      <span class="dot">·</span>
+      <span>AVAILABLE FOR HIRE</span>
+      <span class="dot">·</span>
+      <span>REMOTE WORLDWIDE</span>
+      <span class="dot">·</span>
+    </div>
   </div>
 </section>
 
@@ -180,19 +191,23 @@
     background: var(--color-text-primary);
     color: var(--color-bg);
     padding: var(--space-3) 0;
-    display: flex;
-    align-items: center;
-    gap: var(--space-6);
-    white-space: nowrap;
     overflow: hidden;
     font-family: var(--font-mono);
     font-size: var(--text-xs);
     letter-spacing: var(--tracking-wider);
     font-weight: var(--weight-medium);
+  }
+
+  .contact-banner__track {
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+    width: max-content;
+    white-space: nowrap;
     animation: marquee 28s linear infinite;
   }
 
-  .contact-banner__strip span {
+  .contact-banner__track span {
     flex-shrink: 0;
   }
 
