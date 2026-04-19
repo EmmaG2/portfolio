@@ -24,6 +24,9 @@ body {
   background-color: var(--color-bg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition:
+    background-color var(--duration-normal) var(--ease-out-cubic),
+    color var(--duration-normal) var(--ease-out-cubic);
 }
 
 img,
