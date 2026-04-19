@@ -1,0 +1,211 @@
+---
+import ArrowLink from '../ui/ArrowLink.astro'
+import AccentLabel from '../ui/AccentLabel.astro'
+---
+
+<section class="about-snippet" aria-labelledby="about-snippet-heading">
+  <div class="about-snippet__inner">
+    <div class="about-snippet__text" data-reveal>
+      <AccentLabel text="Who I Am" />
+
+      <h2 id="about-snippet-heading" class="about-snippet__heading">
+        Engineer first.<br />Product thinker second.
+      </h2>
+
+      <div class="about-snippet__body">
+        <p>
+          I'm Fernando — a Full Stack Engineer from Durango, México with 5+ years
+          shipping end-to-end products. I'm most at home when I own a feature
+          completely: schema design, API architecture, frontend implementation,
+          and production deployment.
+        </p>
+        <p>
+          I don't move tickets. I move metrics. Whether it's cutting API response
+          time from 2.8s to 180ms, or rebuilding a reporting tool that saves a
+          team 320 analyst-hours per month — the work I care about has a
+          measurable outcome.
+        </p>
+      </div>
+
+      <ArrowLink href="/about" label="Full story" />
+    </div>
+
+    <div class="about-snippet__stats" data-reveal>
+      <div class="stat">
+        <span class="stat__value">5+</span>
+        <span class="stat__label">Years shipping</span>
+      </div>
+      <div class="stat">
+        <span class="stat__value">18+</span>
+        <span class="stat__label">Projects in production</span>
+      </div>
+      <div class="stat">
+        <span class="stat__value">3</span>
+        <span class="stat__label">Countries deployed to</span>
+      </div>
+      <div class="stat">
+        <span class="stat__value">0</span>
+        <span class="stat__label">Major production outages</span>
+      </div>
+
+      <div class="about-snippet__values">
+        <p class="values-label">Things I care about</p>
+        <ul class="values-list">
+          <li>Async-first communication</li>
+          <li>Boring infrastructure, interesting problems</li>
+          <li>Ship, measure, iterate</li>
+          <li>Code that future-me can debug at 2am</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about-snippet {
+    padding: var(--space-32) var(--container-padding);
+    border-top: 1px solid var(--color-border-subtle);
+  }
+
+  .about-snippet__inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-24);
+    align-items: start;
+  }
+
+  .about-snippet__text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  .about-snippet__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-4xl);
+    font-weight: var(--weight-bold);
+    color: var(--color-text-primary);
+    line-height: var(--leading-tight);
+    margin: 0;
+  }
+
+  .about-snippet__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .about-snippet__body p {
+    font-size: var(--text-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  /* Stats grid */
+  .about-snippet__stats {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-10);
+  }
+
+  .about-snippet__stats > .stat {
+    display: contents;
+  }
+
+  /* Numbers 2x2 grid */
+  .about-snippet__stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-8) var(--space-6);
+    align-content: start;
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding: var(--space-6);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-lg);
+    transition: border-color var(--duration-fast) var(--ease-out-cubic);
+  }
+
+  .stat:hover {
+    border-color: var(--color-accent);
+  }
+
+  .stat__value {
+    font-family: var(--font-display);
+    font-size: var(--text-4xl);
+    font-weight: var(--weight-bold);
+    color: var(--color-accent);
+    line-height: 1;
+  }
+
+  .stat__label {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  /* Values list — spans 2 columns */
+  .about-snippet__values {
+    grid-column: 1 / -1;
+    padding: var(--space-6);
+    background: color-mix(in srgb, var(--color-accent) 5%, var(--color-bg));
+    border: 1px solid color-mix(in srgb, var(--color-accent) 20%, transparent);
+    border-radius: var(--radius-lg);
+  }
+
+  .values-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin: 0 0 var(--space-3);
+  }
+
+  .values-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .values-list li {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    padding-left: var(--space-4);
+    position: relative;
+  }
+
+  .values-list li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .about-snippet__inner {
+      grid-template-columns: 1fr;
+      gap: var(--space-16);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .about-snippet__stats {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

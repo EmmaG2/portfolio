@@ -1,0 +1,194 @@
+---
+
+---
+
+<section class="contact-banner" aria-labelledby="contact-banner-heading">
+  <div class="contact-banner__inner" data-reveal>
+    <div class="contact-banner__text">
+      <p class="contact-banner__label">Available now</p>
+      <h2 id="contact-banner-heading" class="contact-banner__heading">
+        Let's build something<br />worth shipping.
+      </h2>
+      <p class="contact-banner__sub">
+        Open to full-time roles and select consulting engagements.<br />
+        Remote worldwide · Based in Durango, MX.
+      </p>
+    </div>
+
+    <div class="contact-banner__actions">
+      <a href="/contact" class="contact-banner__cta">
+        Get in touch
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+          <path d="M3.75 9h10.5M10.5 5.25L14.25 9l-3.75 3.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+      <a href="mailto:23041076@itdurango.edu.mx" class="contact-banner__email">
+        23041076@itdurango.edu.mx
+      </a>
+    </div>
+  </div>
+
+  <div class="contact-banner__strip" aria-hidden="true">
+    <span>FULL STACK ENGINEER</span>
+    <span>·</span>
+    <span>AVAILABLE FOR HIRE</span>
+    <span>·</span>
+    <span>REMOTE WORLDWIDE</span>
+    <span>·</span>
+    <span>FULL STACK ENGINEER</span>
+    <span>·</span>
+    <span>AVAILABLE FOR HIRE</span>
+    <span>·</span>
+    <span>REMOTE WORLDWIDE</span>
+    <span>·</span>
+    <span>FULL STACK ENGINEER</span>
+    <span>·</span>
+    <span>AVAILABLE FOR HIRE</span>
+    <span>·</span>
+  </div>
+</section>
+
+<style>
+  .contact-banner {
+    border-top: 1px solid var(--color-border-subtle);
+    overflow: hidden;
+  }
+
+  .contact-banner__inner {
+    padding: var(--space-32) var(--container-padding);
+    max-width: var(--container-max);
+    margin-inline: auto;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: var(--space-16);
+    align-items: center;
+  }
+
+  .contact-banner__label {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin: 0 0 var(--space-4);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .contact-banner__label::before {
+    content: '';
+    display: block;
+    width: 6px;
+    height: 6px;
+    background: var(--color-accent);
+    border-radius: 50%;
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.4; transform: scale(0.7); }
+  }
+
+  .contact-banner__heading {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: var(--weight-bold);
+    color: var(--color-text-primary);
+    line-height: var(--leading-tight);
+    margin: 0 0 var(--space-4);
+  }
+
+  .contact-banner__sub {
+    font-size: var(--text-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-relaxed);
+    margin: 0;
+  }
+
+  .contact-banner__actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--space-4);
+    flex-shrink: 0;
+  }
+
+  .contact-banner__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-4) var(--space-8);
+    background: var(--color-text-primary);
+    color: var(--color-bg);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: var(--radius-full);
+    transition:
+      background var(--duration-fast) var(--ease-out-cubic),
+      color var(--duration-fast) var(--ease-out-cubic),
+      gap var(--duration-normal) var(--ease-out-cubic);
+  }
+
+  .contact-banner__cta:hover {
+    background: var(--color-accent);
+    color: var(--color-bg);
+    gap: var(--space-5);
+  }
+
+  .contact-banner__email {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-out-cubic);
+  }
+
+  .contact-banner__email:hover {
+    color: var(--color-accent);
+  }
+
+  /* Marquee strip */
+  .contact-banner__strip {
+    background: var(--color-text-primary);
+    color: var(--color-bg);
+    padding: var(--space-3) 0;
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+    white-space: nowrap;
+    overflow: hidden;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wider);
+    font-weight: var(--weight-medium);
+    animation: marquee 28s linear infinite;
+  }
+
+  .contact-banner__strip span {
+    flex-shrink: 0;
+  }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .contact-banner__inner {
+      grid-template-columns: 1fr;
+      gap: var(--space-10);
+    }
+
+    .contact-banner__actions {
+      align-items: flex-start;
+    }
+  }
+</style>
