@@ -1,44 +1,40 @@
 /**
  * Design System — Tokens
- * Portfolio Personal
+ * Portfolio Fernando Granados
  *
- * Estética: Cosmic Dark Navy — Cinematic Editorial
- * Referencia: Simon Sparks / Creative Mints Portfolio Animation
+ * Light mode default · Dark mode via [data-theme="dark"]
  */
 
+/* ═══════════════════════════════════════════════
+   LIGHT MODE — Default (warm cream editorial)
+═══════════════════════════════════════════════ */
 :root {
 
-  /* ─────────────────────────────────────────────
-     COLORS
-  ───────────────────────────────────────────── */
+  /* ─── Base ─── */
+  --color-bg:               #F5EFE3;
+  --color-surface:          #EDE7DB;
+  --color-surface-elevated: #E5DDD0;
+  --color-surface-raised:   #DDD6C8;
+  --color-border:           #C8BFA8;
+  --color-border-subtle:    #D8D0BF;
 
-  /* Base — Navy profundo, no negro puro */
-  --color-bg:               #0B1929;
-  --color-surface:          #0F2035;
-  --color-surface-elevated: #152840;
-  --color-border:           #1E3A55;
-  --color-border-subtle:    #152438;
+  /* ─── Text ─── */
+  --color-text-primary:     #111110;
+  --color-text-secondary:   rgba(17, 17, 16, 0.58);
+  --color-text-muted:       rgba(17, 17, 16, 0.32);
+  --color-text-inverse:     #F5EFE3;
 
-  /* Text */
-  --color-text-primary:     #FFFFFF;
-  --color-text-secondary:   rgba(255, 255, 255, 0.55);
-  --color-text-muted:       rgba(255, 255, 255, 0.30);
-  --color-text-inverse:     #0B1929;
+  /* ─── Accent — Amber warm ─── */
+  --color-accent:           #D4890A;
+  --color-accent-hover:     #E8A020;
+  --color-accent-dim:       rgba(212, 137, 10, 0.12);
+  --color-accent-glow:      rgba(212, 137, 10, 0.25);
 
-  /* Acento — Ámbar cálido (nav, labels, highlights) */
-  --color-accent:           #E8952A;
-  --color-accent-hover:     #F5AE4D;
-  --color-accent-dim:       rgba(232, 149, 42, 0.12);
-  --color-accent-glow:      rgba(232, 149, 42, 0.30);
+  /* ─── Torus (read by Three.js) ─── */
+  --torus-base:             #C47A0A;
+  --torus-highlight:        #F5A623;
 
-  /* Gradiente del objeto 3D (torus) — referencia para Three.js */
-  --color-3d-blue:          #2563EB;
-  --color-3d-blue-light:    #60A5FA;
-  --color-3d-orange:        #F97316;
-  --color-3d-pink:          #EC4899;
-  --color-3d-magenta:       #D946EF;
-
-  /* Semantic */
+  /* ─── Semantic ─── */
   --color-success:          #22C55E;
   --color-warning:          #F59E0B;
   --color-error:            #EF4444;
@@ -48,26 +44,16 @@
      TYPOGRAPHY
   ───────────────────────────────────────────── */
 
-  /* Font Families
-     Display: Cormorant Garamond (serif bold condensado — hero name)
-              → fonts.google.com/specimen/Cormorant+Garamond
-     Body:    DM Sans (geométrico, limpio — UI, párrafos)
-              → fonts.google.com/specimen/DM+Sans
-     Mono:    JetBrains Mono (labels técnicos, contadores)
-              → fonts.google.com/specimen/JetBrains+Mono
-  */
   --font-display: "Cormorant Garamond", "Playfair Display", Georgia, serif;
-  --font-body:    "DM Sans", "Inter", system-ui, sans-serif;
+  --font-body:    "DM Sans", system-ui, sans-serif;
   --font-mono:    "JetBrains Mono", "Fira Code", ui-monospace, monospace;
 
-  /* Font Weights */
   --weight-regular:   400;
   --weight-medium:    500;
   --weight-semibold:  600;
   --weight-bold:      700;
   --weight-extrabold: 800;
 
-  /* Font Sizes — fluid con clamp() */
   --text-xs:      clamp(0.688rem,  0.64rem + 0.24vw, 0.813rem);
   --text-sm:      clamp(0.875rem,  0.82rem + 0.28vw, 1rem);
   --text-base:    clamp(1rem,      0.92rem + 0.40vw, 1.125rem);
@@ -79,42 +65,40 @@
   --text-5xl:     clamp(3.5rem,    2.20rem + 6.50vw, 7rem);
   --text-display: clamp(4.5rem,    2.00rem + 12.50vw, 11rem);
 
-  /* Line Heights */
   --leading-none:    1;
   --leading-tight:   1.05;
   --leading-snug:    1.2;
   --leading-normal:  1.5;
   --leading-relaxed: 1.75;
 
-  /* Letter Spacing */
   --tracking-tighter: -0.03em;
   --tracking-tight:   -0.01em;
   --tracking-normal:   0em;
   --tracking-wide:     0.08em;
   --tracking-wider:    0.16em;
-  --tracking-widest:   0.24em;   /* Para labels en all-caps como "GENERATIVE DESIGN" */
+  --tracking-widest:   0.24em;
 
 
   /* ─────────────────────────────────────────────
-     SPACING — escala base 4px
+     SPACING — base 4px
   ───────────────────────────────────────────── */
 
-  --space-1:   0.25rem;   /*   4px */
-  --space-2:   0.5rem;    /*   8px */
-  --space-3:   0.75rem;   /*  12px */
-  --space-4:   1rem;      /*  16px */
-  --space-5:   1.25rem;   /*  20px */
-  --space-6:   1.5rem;    /*  24px */
-  --space-8:   2rem;      /*  32px */
-  --space-10:  2.5rem;    /*  40px */
-  --space-12:  3rem;      /*  48px */
-  --space-16:  4rem;      /*  64px */
-  --space-20:  5rem;      /*  80px */
-  --space-24:  6rem;      /*  96px */
-  --space-32:  8rem;      /* 128px */
-  --space-40:  10rem;     /* 160px */
-  --space-48:  12rem;     /* 192px */
-  --space-64:  16rem;     /* 256px */
+  --space-1:   0.25rem;
+  --space-2:   0.5rem;
+  --space-3:   0.75rem;
+  --space-4:   1rem;
+  --space-5:   1.25rem;
+  --space-6:   1.5rem;
+  --space-8:   2rem;
+  --space-10:  2.5rem;
+  --space-12:  3rem;
+  --space-16:  4rem;
+  --space-20:  5rem;
+  --space-24:  6rem;
+  --space-32:  8rem;
+  --space-40:  10rem;
+  --space-48:  12rem;
+  --space-64:  16rem;
 
 
   /* ─────────────────────────────────────────────
@@ -123,18 +107,8 @@
 
   --container-max:     1400px;
   --container-padding: clamp(1.5rem, 5vw, 5rem);
-
   --grid-cols:  12;
   --grid-gap:   clamp(1rem, 2vw, 1.5rem);
-
-  /* Breakpoints — referencia (usar en @media queries)
-     xs:  375px
-     sm:  640px
-     md:  768px
-     lg:  1024px
-     xl:  1280px
-     2xl: 1536px
-  */
 
 
   /* ─────────────────────────────────────────────
@@ -153,23 +127,18 @@
      SHADOWS
   ───────────────────────────────────────────── */
 
-  --shadow-sm:        0 1px 2px rgba(0, 0, 0, 0.40);
-  --shadow-md:        0 4px 12px rgba(0, 0, 0, 0.50);
-  --shadow-lg:        0 8px 32px rgba(0, 0, 0, 0.60);
-  --shadow-xl:        0 16px 64px rgba(0, 0, 0, 0.70);
-  --shadow-accent:    0 0 24px var(--color-accent-glow);
-  --shadow-glow:      0 0 60px var(--color-accent-glow), 0 0 120px var(--color-accent-dim);
-
-  /* Glow del objeto 3D — para iluminación de Three.js */
-  --shadow-3d-blue:   0 0 80px rgba(37, 99, 235, 0.40);
-  --shadow-3d-warm:   0 0 80px rgba(249, 115, 22, 0.30);
+  --shadow-sm:     0 1px 2px rgba(0, 0, 0, 0.08);
+  --shadow-md:     0 4px 12px rgba(0, 0, 0, 0.10);
+  --shadow-lg:     0 8px 32px rgba(0, 0, 0, 0.14);
+  --shadow-xl:     0 16px 64px rgba(0, 0, 0, 0.18);
+  --shadow-accent: 0 0 24px var(--color-accent-glow);
+  --shadow-glow:   0 0 60px var(--color-accent-glow), 0 0 120px var(--color-accent-dim);
 
 
   /* ─────────────────────────────────────────────
-     TRANSITIONS & EASINGS
+     TRANSITIONS
   ───────────────────────────────────────────── */
 
-  /* Duraciones */
   --duration-instant: 50ms;
   --duration-fast:    150ms;
   --duration-normal:  300ms;
@@ -177,7 +146,6 @@
   --duration-slower:  1000ms;
   --duration-slowest: 1500ms;
 
-  /* Curvas de easing (estilo cinematográfico) */
   --ease-out-expo:     cubic-bezier(0.16, 1, 0.30, 1);
   --ease-in-expo:      cubic-bezier(0.70, 0, 0.84, 0);
   --ease-in-out-expo:  cubic-bezier(0.87, 0, 0.13, 1);
@@ -190,7 +158,7 @@
      Z-INDEX
   ───────────────────────────────────────────── */
 
-  --z-canvas:   -1;   /* Three.js canvas background */
+  --z-canvas:   -1;
   --z-base:      0;
   --z-raised:   10;
   --z-dropdown: 100;
@@ -198,4 +166,35 @@
   --z-overlay:  300;
   --z-modal:    400;
   --z-toast:    500;
+}
+
+
+/* ═══════════════════════════════════════════════
+   DARK MODE
+═══════════════════════════════════════════════ */
+[data-theme="dark"] {
+  --color-bg:               #000000;
+  --color-surface:          #0A0A0A;
+  --color-surface-elevated: #141414;
+  --color-surface-raised:   #1A1A1A;
+  --color-border:           #1E1E1E;
+  --color-border-subtle:    #141414;
+
+  --color-text-primary:     #FFFFFF;
+  --color-text-secondary:   rgba(255, 255, 255, 0.55);
+  --color-text-muted:       rgba(255, 255, 255, 0.30);
+  --color-text-inverse:     #000000;
+
+  --color-accent:           #E85C73;
+  --color-accent-hover:     #F07085;
+  --color-accent-dim:       rgba(232, 92, 115, 0.12);
+  --color-accent-glow:      rgba(232, 92, 115, 0.30);
+
+  --torus-base:             #E85C73;
+  --torus-highlight:        #FF8FA3;
+
+  --shadow-sm:  0 1px 2px rgba(0, 0, 0, 0.60);
+  --shadow-md:  0 4px 12px rgba(0, 0, 0, 0.70);
+  --shadow-lg:  0 8px 32px rgba(0, 0, 0, 0.80);
+  --shadow-xl:  0 16px 64px rgba(0, 0, 0, 0.90);
 }
