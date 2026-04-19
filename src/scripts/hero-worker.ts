@@ -91,6 +91,8 @@ function init(canvas: OffscreenCanvas, width: number, height: number, pixelRatio
   animate();
 }
 
+let isFirstFrame = true;
+
 function animate() {
   const delta = Math.min(clock.getDelta(), 0.1);
   
@@ -104,5 +106,11 @@ function animate() {
   }
   
   renderer.render(scene, camera);
+
+  if (isFirstFrame) {
+    self.postMessage({ type: 'ready' });
+    isFirstFrame = false;
+  }
+
   requestAnimationFrame(animate);
 }

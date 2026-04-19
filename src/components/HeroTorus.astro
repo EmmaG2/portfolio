@@ -62,6 +62,13 @@
       });
       resizeObserver.observe(document.body);
 
+      // Listen for ready signal to fade in
+      worker.onmessage = (e) => {
+        if (e.data.type === 'ready') {
+          canvas.style.opacity = '1';
+        }
+      };
+
       // Reactivity
       const updateColor = () => {
         worker.postMessage({ type: 'update-color', payload: { color: getAccentColor() } });
@@ -103,5 +110,7 @@
     height: 100%;
     z-index: -1;
     pointer-events: none;
+    opacity: 0;
+    transition: opacity 1.2s cubic-bezier(0.33, 1, 0.68, 1);
   }
 </style>
