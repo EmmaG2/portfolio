@@ -4,12 +4,14 @@ import SiteNav from '../components/layout/SiteNav.astro'
 import SiteFooter from '../components/layout/SiteFooter.astro'
 import HeroSection from '../components/home/HeroSection.astro'
 import WorkPreview from '../components/home/WorkPreview.astro'
+import AboutSnippet from '../components/home/AboutSnippet.astro'
+import ContactBanner from '../components/home/ContactBanner.astro'
 
 const structuredData = {
   '@context': 'https://schema.org',
   '@type': 'Person',
   name: 'Fernando Granados',
-  jobTitle: 'Full Stack Engineer',
+  jobTitle: 'Senior Full Stack Engineer',
   url: 'https://fernandogranados.dev',
   email: '23041076@itdurango.edu.mx',
   address: {
@@ -22,25 +24,21 @@ const structuredData = {
     'https://linkedin.com/in/fernando-granados',
   ],
   knowsAbout: [
-    'TypeScript',
-    'React',
-    'Next.js',
-    'Node.js',
-    'FastAPI',
-    'PostgreSQL',
-    'Docker',
-    'Astro',
+    'TypeScript', 'React', 'Next.js', 'Node.js',
+    'FastAPI', 'PostgreSQL', 'Docker', 'Astro',
   ],
 }
 ---
 
 <BaseLayout
   title="Full Stack Engineer"
-  description="Fernando Granados is a Senior Full Stack Engineer based in Durango, MX. 5 years shipping products from idea to production with React, Next.js, Node.js and FastAPI."
+  description="Fernando Granados is a Senior Full Stack Engineer based in Durango, MX. 5+ years shipping end-to-end products with React, Next.js, Node.js and FastAPI — from schema to production."
   structuredData={structuredData}
 >
   <SiteNav slot="nav" currentPath={Astro.url.pathname} />
   <HeroSection />
   <WorkPreview />
+  <AboutSnippet />
+  <ContactBanner />
   <SiteFooter slot="footer" />
 </BaseLayout>
