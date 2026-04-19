@@ -1,4 +1,5 @@
 ---
+/* src/components/layout/SiteNav.astro */
 interface Props {
   currentPath: string
 }
@@ -17,22 +18,21 @@ const navLinks = [
 ]
 
 const accentColors = [
-  { hex: '#D4890A', label: 'Amber' },
-  { hex: '#E85C73', label: 'Rose' },
-  { hex: '#3B82F6', label: 'Blue' },
-  { hex: '#10B981', label: 'Emerald' },
-  { hex: '#8B5CF6', label: 'Violet' },
+  { hex: '#E85C73', label: 'Rosa' },
+  { hex: '#D4890A', label: 'Ámbar' },
+  { hex: '#EA580C', label: 'Naranja' },
+  { hex: '#10B981', label: 'Esmeralda' },
+  { hex: '#8B5CF6', label: 'Violeta' },
 ]
 ---
 
 <header role="banner">
-  <!-- Top accent line -->
   <div class="nav-top-line" aria-hidden="true"></div>
 
   <nav aria-label="Main navigation">
     <a href="/" class="nav-logo" aria-label="Fernando Granados — Home">FG</a>
 
-    <!-- Desktop links -->
+    <!-- Desktop Links (Hidden on mobile) -->
     <ul class="nav-links" role="list">
       {navLinks.map(({ label, href }) => (
         <li>
@@ -47,71 +47,71 @@ const accentColors = [
       ))}
     </ul>
 
-    <!-- Controls: color picker + theme toggle -->
-    <div class="nav-controls">
-      <div class="color-picker" id="color-picker">
+    <!-- Shared Controls (Visible on Desktop AND Mobile) -->
+    <div class="nav-right-container">
+      <div class="nav-controls">
+        <div class="color-picker" id="color-picker">
+          <button
+            class="color-picker__trigger"
+            id="color-picker-btn"
+            aria-label="Select accent color"
+            aria-expanded="false"
+            aria-haspopup="listbox"
+            type="button"
+          >
+            <span class="color-picker__dot" id="color-dot"></span>
+            <svg class="color-picker__chevron" width="8" height="5" viewBox="0 0 8 5" fill="none" aria-hidden="true">
+              <path d="M1 1L4 4L7 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+
+          <div class="color-picker__panel" id="color-panel" role="listbox" aria-label="Accent colors" hidden>
+            {accentColors.map(({ hex, label }) => (
+              <button
+                class="color-swatch"
+                data-color={hex}
+                role="option"
+                aria-label={label}
+                title={label}
+                type="button"
+                style={`background-color: ${hex}`}
+              />
+            ))}
+          </div>
+        </div>
+
         <button
-          class="color-picker__trigger"
-          id="color-picker-btn"
-          aria-label="Select accent color"
-          aria-expanded="false"
-          aria-haspopup="listbox"
+          class="theme-toggle"
+          id="theme-toggle"
+          aria-label="Toggle color theme"
           type="button"
         >
-          <span class="color-picker__dot" id="color-dot"></span>
-          <svg class="color-picker__chevron" width="8" height="5" viewBox="0 0 8 5" fill="none" aria-hidden="true">
-            <path d="M1 1L4 4L7 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+          </svg>
+          <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
           </svg>
         </button>
-
-        <div class="color-picker__panel" id="color-panel" role="listbox" aria-label="Accent colors" hidden>
-          {accentColors.map(({ hex, label }) => (
-            <button
-              class="color-swatch"
-              data-color={hex}
-              role="option"
-              aria-label={label}
-              title={label}
-              type="button"
-              style={`background-color: ${hex}`}
-            />
-          ))}
-        </div>
       </div>
 
       <button
-        class="theme-toggle"
-        id="theme-toggle"
-        aria-label="Toggle color theme"
+        class="nav-hamburger"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        aria-label="Open navigation menu"
         type="button"
       >
-        <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <circle cx="12" cy="12" r="4"/>
-          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
-        </svg>
-        <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-        </svg>
+        <span class="nav-hamburger__bar"></span>
+        <span class="nav-hamburger__bar"></span>
       </button>
     </div>
-
-    <!-- Mobile hamburger -->
-    <button
-      class="nav-hamburger"
-      aria-expanded="false"
-      aria-controls="mobile-menu"
-      aria-label="Open navigation menu"
-      type="button"
-    >
-      <span class="nav-hamburger__bar"></span>
-      <span class="nav-hamburger__bar"></span>
-    </button>
   </nav>
 
-  <!-- Bottom border -->
   <div class="nav-bottom-border" aria-hidden="true"></div>
 
-  <!-- Mobile overlay -->
+  <!-- Mobile Overlay -->
   <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
     <nav aria-label="Mobile navigation">
       <ul class="mobile-menu__list">
@@ -130,8 +130,10 @@ const accentColors = [
 <script>
   function initNav() {
     const html = document.documentElement
+    const pickerBtnCheck = document.getElementById('color-picker-btn') as HTMLButtonElement | null
+    if (!pickerBtnCheck || pickerBtnCheck.dataset.init === '1') return
+    pickerBtnCheck.dataset.init = '1'
 
-    /* ── Theme toggle ── */
     const toggleBtn = document.getElementById('theme-toggle') as HTMLButtonElement | null
     if (toggleBtn) {
       toggleBtn.addEventListener('click', () => {
@@ -148,7 +150,6 @@ const accentColors = [
       })
     }
 
-    /* ── Color picker ── */
     const pickerBtn = document.getElementById('color-picker-btn') as HTMLButtonElement | null
     const pickerPanel = document.getElementById('color-panel') as HTMLElement | null
     const dot = document.getElementById('color-dot') as HTMLElement | null
@@ -177,12 +178,10 @@ const accentColors = [
         pickerPanel.hidden = !open
         pickerBtn.setAttribute('aria-expanded', String(open))
       })
-
       document.addEventListener('click', () => {
         pickerPanel.hidden = true
         pickerBtn.setAttribute('aria-expanded', 'false')
       })
-
       pickerPanel.addEventListener('click', (e) => e.stopPropagation())
     }
 
@@ -197,7 +196,6 @@ const accentColors = [
       })
     })
 
-    /* ── Mobile menu ── */
     const hamburger = document.querySelector('.nav-hamburger') as HTMLButtonElement | null
     const mobileMenu = document.getElementById('mobile-menu')
 
@@ -222,18 +220,17 @@ const accentColors = [
     mobileMenu?.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu))
   }
 
+  initNav()
   document.addEventListener('astro:page-load', initNav)
 </script>
 
 <style>
-  /* ─── Top accent bar ─── */
   .nav-top-line {
     height: 3px;
     background: var(--color-accent);
     transition: background var(--duration-normal) var(--ease-out-cubic);
   }
 
-  /* ─── Header ─── */
   header {
     position: fixed;
     top: 0;
@@ -247,30 +244,27 @@ const accentColors = [
   nav {
     display: flex;
     align-items: center;
-    gap: var(--space-8);
+    justify-content: space-between;
     padding: var(--space-4) var(--container-padding);
     max-width: var(--container-max);
     margin-inline: auto;
+    gap: var(--space-4);
   }
 
-  /* ─── Logo ─── */
   .nav-logo {
     font-family: var(--font-display);
     font-size: 1.35rem;
     font-weight: var(--weight-bold);
-    letter-spacing: -0.01em;
     color: var(--color-text-primary);
     text-decoration: none;
     transition: color var(--duration-fast) var(--ease-out-cubic);
     flex-shrink: 0;
-    margin-right: auto;
   }
 
   .nav-logo:hover {
     color: var(--color-accent);
   }
 
-  /* ─── Nav links ─── */
   .nav-links {
     list-style: none;
     display: flex;
@@ -304,28 +298,24 @@ const accentColors = [
     transition: width var(--duration-normal) var(--ease-out-cubic);
   }
 
-  .nav-links a:hover {
-    color: var(--color-text-primary);
-  }
-
   .nav-links a:hover::after,
   .nav-links a.active::after {
     width: 100%;
   }
 
-  .nav-links a.active {
-    color: var(--color-text-primary);
+  .nav-right-container {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    flex-shrink: 0;
   }
 
-  /* ─── Controls ─── */
   .nav-controls {
     display: flex;
     align-items: center;
     gap: var(--space-3);
-    flex-shrink: 0;
   }
 
-  /* ─── Color picker ─── */
   .color-picker {
     position: relative;
   }
@@ -339,8 +329,8 @@ const accentColors = [
     cursor: pointer;
     padding: var(--space-2);
     border-radius: var(--radius-full);
-    transition: background var(--duration-fast) var(--ease-out-cubic);
     color: var(--color-text-secondary);
+    transition: background var(--duration-fast) var(--ease-out-cubic);
   }
 
   .color-picker__trigger:hover {
@@ -354,11 +344,9 @@ const accentColors = [
     border-radius: var(--radius-full);
     background: var(--color-accent);
     flex-shrink: 0;
-    transition: background var(--duration-normal) var(--ease-out-cubic);
   }
 
   .color-picker__chevron {
-    flex-shrink: 0;
     transition: transform var(--duration-fast) var(--ease-out-cubic);
   }
 
@@ -390,18 +378,13 @@ const accentColors = [
     border-radius: var(--radius-full);
     border: 2px solid transparent;
     cursor: pointer;
-    transition:
-      transform var(--duration-fast) var(--ease-spring),
-      border-color var(--duration-fast) var(--ease-out-cubic);
-    flex-shrink: 0;
+    transition: transform var(--duration-fast) var(--ease-spring);
   }
 
   .color-swatch:hover {
     transform: scale(1.2);
-    border-color: var(--color-text-muted);
   }
 
-  /* ─── Theme toggle ─── */
   .theme-toggle {
     display: flex;
     align-items: center;
@@ -413,10 +396,7 @@ const accentColors = [
     border: 1px solid var(--color-border);
     cursor: pointer;
     color: var(--color-text-secondary);
-    transition:
-      background var(--duration-fast) var(--ease-out-cubic),
-      color var(--duration-fast) var(--ease-out-cubic),
-      border-color var(--duration-fast) var(--ease-out-cubic);
+    transition: background var(--duration-fast) var(--ease-out-cubic);
   }
 
   .theme-toggle:hover {
@@ -424,20 +404,16 @@ const accentColors = [
     color: var(--color-text-primary);
   }
 
-  /* Show moon in light mode, sun in dark mode */
   .icon-sun  { display: none; }
   .icon-moon { display: block; }
-
   [data-theme="dark"] .icon-sun  { display: block; }
   [data-theme="dark"] .icon-moon { display: none; }
 
-  /* ─── Bottom border ─── */
   .nav-bottom-border {
     height: 1px;
     background: var(--color-border-subtle);
   }
 
-  /* ─── Hamburger ─── */
   .nav-hamburger {
     display: none;
     width: 44px;
@@ -450,7 +426,6 @@ const accentColors = [
     border: none;
     cursor: pointer;
     padding: var(--space-3);
-    flex-shrink: 0;
   }
 
   .nav-hamburger__bar {
@@ -459,21 +434,16 @@ const accentColors = [
     height: 1.5px;
     background: var(--color-text-primary);
     border-radius: 2px;
-    transition:
-      transform var(--duration-normal) var(--ease-out-cubic),
-      opacity var(--duration-normal) var(--ease-out-cubic);
-    transform-origin: center;
+    transition: transform var(--duration-normal) var(--ease-out-cubic), opacity var(--duration-normal) var(--ease-out-cubic);
   }
 
   .nav-hamburger[aria-expanded="true"] .nav-hamburger__bar:first-child {
     transform: translateY(3.75px) rotate(45deg);
   }
-
   .nav-hamburger[aria-expanded="true"] .nav-hamburger__bar:last-child {
     transform: translateY(-3.75px) rotate(-45deg);
   }
 
-  /* ─── Mobile menu ─── */
   .mobile-menu {
     position: fixed;
     inset: 0;
@@ -494,8 +464,6 @@ const accentColors = [
 
   .mobile-menu__list {
     list-style: none;
-    margin: 0;
-    padding: 0;
     display: flex;
     flex-direction: column;
     gap: var(--space-6);
@@ -508,7 +476,6 @@ const accentColors = [
     font-weight: var(--weight-bold);
     color: var(--color-text-secondary);
     text-decoration: none;
-    letter-spacing: var(--tracking-tight);
     transition: color var(--duration-fast) var(--ease-out-cubic);
   }
 
@@ -517,21 +484,25 @@ const accentColors = [
     color: var(--color-accent);
   }
 
-  /* ─── Responsive ─── */
+  /* ─── Responsive Adjustments ─── */
   @media (max-width: 768px) {
     .nav-links {
-      gap: var(--space-5);
+      display: none; /* Hide desktop links first */
+    }
+    
+    .nav-hamburger {
+      display: flex; /* Show hamburger */
     }
   }
 
-  @media (max-width: 639px) {
-    .nav-links,
+  @media (max-width: 480px) {
     .nav-controls {
-      display: none;
+      gap: var(--space-2);
     }
-
-    .nav-hamburger {
-      display: flex;
+    
+    .theme-toggle {
+      width: 30px;
+      height: 30px;
     }
   }
 </style>
