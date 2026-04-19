@@ -35,12 +35,6 @@ body {
     color var(--duration-normal) var(--ease-out-cubic);
 }
 
-/* 2. Modern Layout & Typography Utilities */
-main {
-  /* Ensure content starts after the fixed header */
-  padding-top: var(--space-20);
-}
-
 h1, h2, h3, h4 {
   font-family: var(--font-display);
   line-height: var(--leading-tight);
