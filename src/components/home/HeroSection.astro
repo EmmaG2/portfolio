@@ -1,5 +1,6 @@
 ---
 import HeroTorus from '../HeroTorus.astro'
+import Icon from '../ui/Icon.astro'
 ---
 
 <section class="hero" aria-label="Introduction">
@@ -18,10 +19,7 @@ import HeroTorus from '../HeroTorus.astro'
     <p class="hero__tagline">Building digital experiences for 5+ years</p>
 
     <div class="hero__scroll" aria-hidden="true">
-      <svg class="hero__scroll-icon" width="24" height="36" viewBox="0 0 24 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="1" y="1" width="22" height="34" rx="11" stroke="currentColor" stroke-width="1.5"/>
-        <rect class="hero__scroll-dot" x="11" y="8" width="2" height="6" rx="1" fill="currentColor"/>
-      </svg>
+      <Icon name="mouse" size={24} class="hero__scroll-icon" />
     </div>
   </div>
 </section>
@@ -117,11 +115,7 @@ import HeroTorus from '../HeroTorus.astro'
 
   .hero__scroll-icon {
     display: block;
-  }
-
-  .hero__scroll-dot {
     animation: scroll-bounce 1.8s var(--ease-in-out-cubic) infinite;
-    transform-origin: top center;
   }
 
   @keyframes scroll-bounce {
