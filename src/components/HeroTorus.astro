@@ -1,52 +1,57 @@
 ---
-/* src/components/HeroTorus.astro */
+/* src/components/HeroTorus.astro - OPTIMIZACIÓN MÁXIMA (MatCap Edition) */
 ---
 
 <canvas id="hero-canvas" aria-hidden="true"></canvas>
-<!-- Sentinel: observed to pause rendering when hero is out of view -->
 <div id="hero-sentinel" aria-hidden="true" style="position:absolute;top:0;left:0;width:1px;height:100vh;pointer-events:none;"></div>
 
 <script>
   import * as THREE from 'three'
-  import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js'
 
-  interface LightDef {
-    type: 'dir' | 'point'
-    color: number
-    intensity: number
-    pos: [number, number, number]
-    dist?: number
-  }
-  interface Preset {
-    color: string; metalness: number; roughness: number
-    transmission: number; thickness: number
-    clearcoat: number; clearcoatRoughness: number
-    iridescence: number; iridescenceIOR: number; iridescenceRange: [number, number]
-    envMapIntensity: number; ambientColor: number; ambientIntensity: number
-    lights: LightDef[]
-  }
+  /* ── MatCap Generator (The "Elite" Trick) ── */
+  // Instead of lights, we "draw" the material appearance once on a 256px circle.
+  // The GPU then just maps this circle to the geometry's normals. 
+  // Result: Stunning quality, 0 lighting calculation cost.
+  function generateMatcap(color: string, dark: boolean): THREE.CanvasTexture {
+    const size = 256
+    const canvas = document.createElement('canvas')
+    canvas.width = size; canvas.height = size
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return new THREE.CanvasTexture(canvas)
 
-  const LIGHT_HQ: Preset = {
-    color: '#C47A0A', metalness: 0.15, roughness: 0.08,
-    transmission: 0.22, thickness: 1.8,
-    clearcoat: 0.6, clearcoatRoughness: 0.08,
-    iridescence: 0.5, iridescenceIOR: 1.6, iridescenceRange: [80, 450],
-    envMapIntensity: 1.6, ambientColor: 0xfff8e8, ambientIntensity: 0.8,
-    lights: [
-      { type: 'dir',   color: 0xfff0cc, intensity: 5,  pos: [-3,  6, 4]  },
-      { type: 'point', color: 0xff8800, intensity: 10, pos: [ 4, -1, 3], dist: 15 },
-    ],
-  }
-  const DARK_HQ: Preset = {
-    color: '#E85C73', metalness: 0.1, roughness: 0.08,
-    transmission: 0.35, thickness: 2.2,
-    clearcoat: 0.8, clearcoatRoughness: 0.08,
-    iridescence: 0.7, iridescenceIOR: 1.8, iridescenceRange: [80, 600],
-    envMapIntensity: 2.0, ambientColor: 0x0a0000, ambientIntensity: 0.8,
-    lights: [
-      { type: 'dir',   color: 0xff88aa, intensity: 5,   pos: [-4,  5,  3]  },
-      { type: 'point', color: 0xff3060, intensity: 10,  pos: [ 4, -0.5, 3], dist: 15 },
-    ],
+    const center = size / 2
+    const radius = size / 2
+
+    // Base color
+    ctx.beginPath()
+    ctx.arc(center, center, radius, 0, Math.PI * 2)
+    ctx.fillStyle = color
+    ctx.fill()
+
+    // Main highlight (The "Shiny" spot)
+    const highlight = ctx.createRadialGradient(center * 0.7, center * 0.7, 0, center * 0.7, center * 0.7, radius * 0.8)
+    highlight.addColorStop(0, dark ? 'rgba(255, 255, 255, 0.4)' : 'rgba(255, 255, 255, 0.6)')
+    highlight.addColorStop(1, 'rgba(255, 255, 255, 0)')
+    ctx.fillStyle = highlight
+    ctx.fill()
+
+    // Rim light (The "Glow" on edges)
+    const rim = ctx.createRadialGradient(center, center, radius * 0.8, center, center, radius)
+    rim.addColorStop(0, 'rgba(0, 0, 0, 0)')
+    rim.addColorStop(1, dark ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.1)')
+    ctx.fillStyle = rim
+    ctx.fill()
+
+    // Glassy refraction simulation (Bottom highlight)
+    const bottomLight = ctx.createRadialGradient(center * 1.3, center * 1.3, 0, center * 1.3, center * 1.3, radius * 0.6)
+    bottomLight.addColorStop(0, dark ? 'rgba(255, 255, 255, 0.15)' : 'rgba(255, 255, 255, 0.3)')
+    bottomLight.addColorStop(1, 'rgba(0, 0, 0, 0)')
+    ctx.fillStyle = bottomLight
+    ctx.fill()
+
+    const texture = new THREE.CanvasTexture(canvas)
+    texture.colorSpace = THREE.SRGBColorSpace
+    return texture
   }
 
   function initTorus() {
@@ -55,43 +60,31 @@
     canvas.dataset.init = '1'
 
     const isMobile = window.innerWidth < 768
-    // Optimizamos segmentos: 128 radiales para nitidez sin lag
-    const TUBE_SEG   = isMobile ? 24 : 32
-    const RADIAL_SEG = isMobile ? 64 : 128
+    // High-quality geometry but optimized segments
+    const TUBE_SEG   = isMobile ? 32 : 48
+    const RADIAL_SEG = isMobile ? 96 : 160
 
     const isDark = () => document.documentElement.getAttribute('data-theme') === 'dark'
-    const getAccentColor = (): string =>
+    const getAccentColor = (): string => 
       localStorage.getItem('fg-accent') ?? (isDark() ? '#E85C73' : '#C47A0A')
 
     const renderer = new THREE.WebGLRenderer({
       canvas, 
-      antialias: !isMobile,
+      antialias: true, // With MatCap, we can afford antialiasing easily
       alpha: true, 
-      powerPreference: 'high-performance',
+      powerPreference: 'high-performance'
     })
     
     renderer.setSize(window.innerWidth, window.innerHeight)
-    // Cap pixel ratio a 1.5 para evitar sobrecarga en pantallas Retina
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5))
-    renderer.toneMapping = THREE.ACESFilmicToneMapping
     renderer.outputColorSpace = THREE.SRGBColorSpace
 
     const scene  = new THREE.Scene()
     const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100)
     camera.position.z = isMobile ? 8 : 6
 
-    // Generar entorno (RoomEnvironment)
-    const pmrem = new THREE.PMREMGenerator(renderer)
-    const envTexture = pmrem.fromScene(new RoomEnvironment(), 0.04).texture
-    scene.environment = envTexture
-    pmrem.dispose()
-
     const geometry = new THREE.TorusGeometry(1.8, 0.62, TUBE_SEG, RADIAL_SEG)
-    const material = new THREE.MeshPhysicalMaterial({
-        transparent: true,
-        roughness: 0.08,
-        metalness: 0.1
-    })
+    const material = new THREE.MeshMatcapMaterial({ transparent: true, opacity: 0.95 })
     
     const group = new THREE.Group()
     const torus = new THREE.Mesh(geometry, material)
@@ -99,47 +92,21 @@
     group.add(torus)
     scene.add(group)
 
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5)
-    scene.add(ambientLight)
-    
-    const managedLights: THREE.Light[] = []
-
-    function applyPreset(preset: Preset, accentOverride?: string) {
-      const col = accentOverride ?? preset.color
-      material.color.set(col)
-      material.transmission = preset.transmission
-      material.thickness = preset.thickness
-      material.iridescence = preset.iridescence
-      material.envMapIntensity = preset.envMapIntensity
-      material.clearcoat = preset.clearcoat
-      material.clearcoatRoughness = preset.clearcoatRoughness
-      
-      managedLights.forEach(l => scene.remove(l))
-      managedLights.length = 0
-      
-      preset.lights.forEach(def => {
-        const light = def.type === 'dir' 
-          ? new THREE.DirectionalLight(def.color, def.intensity)
-          : new THREE.PointLight(def.color, def.intensity, def.dist)
-        light.position.set(...def.pos)
-        scene.add(light)
-        managedLights.push(light)
-      })
-    }
-
-    applyPreset(isDark() ? DARK_HQ : LIGHT_HQ, getAccentColor())
+    // Initial MatCap generation
+    let currentMatcap = generateMatcap(getAccentColor(), isDark())
+    material.matcap = currentMatcap
 
     const pointer = { x: 0, y: 0 }, smooth = { x: 0, y: 0 }
     const clock = new THREE.Clock()
 
     function animate() {
-      const delta = Math.min(clock.getDelta(), 0.1) // Cap delta para evitar tirones
+      const delta = Math.min(clock.getDelta(), 0.1)
       
-      smooth.x += (pointer.x - smooth.x) * (delta * 2.5)
-      smooth.y += (pointer.y - smooth.y) * (delta * 2.5)
+      smooth.x += (pointer.x - smooth.x) * (delta * 3)
+      smooth.y += (pointer.y - smooth.y) * (delta * 3)
       
-      torus.rotation.y += delta * 0.2
-      group.rotation.y = smooth.x * 0.15
+      torus.rotation.y += delta * 0.25
+      group.rotation.y = smooth.x * 0.18
       group.rotation.x = -smooth.y * 0.1
       
       renderer.render(scene, camera)
@@ -147,13 +114,11 @@
 
     renderer.setAnimationLoop(animate)
 
-    // ResizeObserver es más eficiente que el evento resize global
     const resizeObserver = new ResizeObserver(() => {
         const w = window.innerWidth, h = window.innerHeight
         camera.aspect = w / h
         camera.updateProjectionMatrix()
         renderer.setSize(w, h)
-        // No es necesario actualizar el pixelRatio en cada resize a menos que cambie de monitor
     })
     resizeObserver.observe(document.body)
 
@@ -161,27 +126,26 @@
       pointer.x = (x / window.innerWidth - 0.5) * 2
       pointer.y = (y / window.innerHeight - 0.5) * 2
     }
-
     window.addEventListener('mousemove', (e) => onMove(e.clientX, e.clientY))
     window.addEventListener('touchmove', (e) => onMove(e.touches[0].clientX, e.touches[0].clientY), { passive: true })
 
     const io = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        clock.start()
-        renderer.setAnimationLoop(animate)
-      } else {
-        renderer.setAnimationLoop(null)
-      }
+      if (entry.isIntersecting) { clock.start(); renderer.setAnimationLoop(animate) }
+      else { renderer.setAnimationLoop(null) }
     })
     const sentinel = document.getElementById('hero-sentinel')
     if (sentinel) io.observe(sentinel)
 
-    // Reactividad
-    const onThemeChanged = (e: any) => applyPreset(e.detail.dark ? DARK_HQ : LIGHT_HQ, getAccentColor())
-    const onAccentChanged = (e: any) => { material.color.set(e.detail.color); material.needsUpdate = true }
+    // Reactivity (Dynamic MatCap generation on-the-fly)
+    const updateLook = () => {
+      const newMatcap = generateMatcap(getAccentColor(), isDark())
+      if (material.matcap) material.matcap.dispose()
+      material.matcap = newMatcap
+      material.needsUpdate = true
+    }
     
-    document.addEventListener('theme-changed', onThemeChanged as EventListener)
-    document.addEventListener('accent-changed', onAccentChanged as EventListener)
+    document.addEventListener('theme-changed',  updateLook)
+    document.addEventListener('accent-changed', updateLook)
 
     document.addEventListener('astro:before-swap', () => {
       renderer.setAnimationLoop(null)
@@ -189,10 +153,10 @@
       io.disconnect()
       geometry.dispose()
       material.dispose()
-      envTexture.dispose()
+      if (material.matcap) material.matcap.dispose()
       renderer.dispose()
-      document.removeEventListener('theme-changed', onThemeChanged as EventListener)
-      document.removeEventListener('accent-changed', onAccentChanged as EventListener)
+      document.removeEventListener('theme-changed', updateLook)
+      document.removeEventListener('accent-changed', updateLook)
     }, { once: true })
   }
 
