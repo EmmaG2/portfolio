@@ -36,47 +36,46 @@ const fullTitle = `${title} — Fernando Granados`
     <link rel="canonical" href={canonical} />
     {noIndex && <meta name="robots" content="noindex, nofollow" />}
 
-    <!-- Open Graph -->
     <meta property="og:type" content={ogType} />
     <meta property="og:url" content={canonical} />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={new URL(ogImage, Astro.site)} />
+    <meta property="og:image" content={new URL(ogImage, Astro.site ?? Astro.url)} />
     <meta property="og:site_name" content="Fernando Granados" />
     <meta property="og:locale" content="en_US" />
 
-    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={fullTitle} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={new URL(ogImage, Astro.site)} />
+    <meta name="twitter:image" content={new URL(ogImage, Astro.site ?? Astro.url)} />
 
-    <!-- Favicons -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
 
-    <!-- Preload critical fonts -->
-    <link
-      rel="preload"
-      href="/fonts/CormorantGaramond-Bold.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
-    <link
-      rel="preload"
-      href="/fonts/DMSans-Regular.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
+    <!-- Theme init — runs before paint to prevent flash -->
+    <script is:inline>
+      ;(function () {
+        var saved = localStorage.getItem('fg-theme')
+        var preferred = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        var theme = saved || preferred
+        if (theme === 'dark') {
+          document.documentElement.setAttribute('data-theme', 'dark')
+        }
+
+        var accent = localStorage.getItem('fg-accent')
+        if (accent) {
+          document.documentElement.style.setProperty('--color-accent', accent)
+          document.documentElement.style.setProperty('--color-accent-hover', accent)
+        }
+      })()
+    </script>
 
     <script>
       import { initReveal } from '../../scripts/reveal'
+      document.addEventListener('DOMContentLoaded', () => initReveal())
       document.addEventListener('astro:page-load', () => initReveal())
     </script>
 
-    <!-- JSON-LD Structured Data -->
     {
       structuredData && (
         <script
