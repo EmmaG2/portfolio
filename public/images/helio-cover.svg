@@ -1,0 +1,141 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0D1421"/>
+      <stop offset="100%" stop-color="#0F2040"/>
+    </linearGradient>
+    <linearGradient id="chart" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0%" stop-color="#D4890A" stop-opacity="0.05"/>
+      <stop offset="100%" stop-color="#D4890A" stop-opacity="0.35"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="675" fill="url(#bg)"/>
+
+  <!-- Sidebar -->
+  <rect x="0" y="0" width="220" height="675" fill="rgba(255,255,255,0.03)"/>
+  <rect x="0" y="0" width="3" height="675" fill="#D4890A" opacity="0.6"/>
+
+  <!-- Sidebar logo -->
+  <rect x="28" y="28" width="36" height="36" rx="8" fill="#D4890A" opacity="0.9"/>
+  <text x="46" y="51" font-family="serif" font-size="16" fill="white" text-anchor="middle" font-weight="bold">H</text>
+
+  <!-- Sidebar nav items -->
+  <rect x="24" y="90" width="4" height="32" rx="2" fill="#D4890A"/>
+  <rect x="38" y="99" width="80" height="8" rx="4" fill="rgba(255,255,255,0.7)"/>
+  <rect x="38" y="143" width="68" height="6" rx="3" fill="rgba(255,255,255,0.25)"/>
+  <rect x="38" y="178" width="72" height="6" rx="3" fill="rgba(255,255,255,0.25)"/>
+  <rect x="38" y="213" width="60" height="6" rx="3" fill="rgba(255,255,255,0.25)"/>
+  <rect x="38" y="248" width="76" height="6" rx="3" fill="rgba(255,255,255,0.25)"/>
+  <rect x="38" y="283" width="52" height="6" rx="3" fill="rgba(255,255,255,0.25)"/>
+
+  <!-- Top bar -->
+  <rect x="220" y="0" width="980" height="64" fill="rgba(255,255,255,0.02)"/>
+  <rect x="220" y="63" width="980" height="1" fill="rgba(255,255,255,0.06)"/>
+  <rect x="280" y="20" width="300" height="26" rx="13" fill="rgba(255,255,255,0.05)"/>
+  <rect x="296" y="30" width="12" height="6" rx="3" fill="rgba(255,255,255,0.2)"/>
+  <rect x="316" y="30" width="80" height="6" rx="3" fill="rgba(255,255,255,0.15)"/>
+  <!-- Avatar -->
+  <circle cx="1160" cy="32" r="18" fill="rgba(212,137,10,0.3)"/>
+  <circle cx="1160" cy="32" r="10" fill="#D4890A" opacity="0.8"/>
+
+  <!-- Page title -->
+  <rect x="248" y="86" width="160" height="12" rx="6" fill="rgba(255,255,255,0.6)"/>
+  <rect x="248" y="106" width="220" height="7" rx="3" fill="rgba(255,255,255,0.2)"/>
+
+  <!-- KPI Cards row -->
+  <!-- Card 1 -->
+  <rect x="248" y="134" width="208" height="100" rx="12" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  <rect x="268" y="154" width="60" height="6" rx="3" fill="rgba(255,255,255,0.3)"/>
+  <rect x="268" y="174" width="100" height="20" rx="4" fill="rgba(255,255,255,0.75)"/>
+  <rect x="268" y="204" width="80" height="6" rx="3" fill="rgba(212,137,10,0.7)"/>
+
+  <!-- Card 2 -->
+  <rect x="472" y="134" width="208" height="100" rx="12" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  <rect x="492" y="154" width="72" height="6" rx="3" fill="rgba(255,255,255,0.3)"/>
+  <rect x="492" y="174" width="90" height="20" rx="4" fill="rgba(255,255,255,0.75)"/>
+  <rect x="492" y="204" width="60" height="6" rx="3" fill="rgba(16,185,129,0.7)"/>
+
+  <!-- Card 3 -->
+  <rect x="696" y="134" width="208" height="100" rx="12" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  <rect x="716" y="154" width="56" height="6" rx="3" fill="rgba(255,255,255,0.3)"/>
+  <rect x="716" y="174" width="110" height="20" rx="4" fill="rgba(255,255,255,0.75)"/>
+  <rect x="716" y="204" width="70" height="6" rx="3" fill="rgba(239,68,68,0.7)"/>
+
+  <!-- Card 4 -->
+  <rect x="920" y="134" width="242" height="100" rx="12" fill="rgba(212,137,10,0.12)" stroke="rgba(212,137,10,0.25)" stroke-width="1"/>
+  <rect x="940" y="154" width="66" height="6" rx="3" fill="rgba(212,137,10,0.6)"/>
+  <rect x="940" y="174" width="120" height="20" rx="4" fill="#D4890A" opacity="0.9"/>
+  <rect x="940" y="204" width="80" height="6" rx="3" fill="rgba(212,137,10,0.5)"/>
+
+  <!-- Main chart area -->
+  <rect x="248" y="252" width="638" height="240" rx="12" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+  <rect x="268" y="268" width="100" height="8" rx="4" fill="rgba(255,255,255,0.4)"/>
+  <rect x="268" y="282" width="70" height="5" rx="2" fill="rgba(255,255,255,0.18)"/>
+
+  <!-- Chart grid lines -->
+  <line x1="268" y1="460" x2="866" y2="460" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+  <line x1="268" y1="430" x2="866" y2="430" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+  <line x1="268" y1="400" x2="866" y2="400" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+  <line x1="268" y1="370" x2="866" y2="370" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+  <line x1="268" y1="340" x2="866" y2="340" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+  <line x1="268" y1="310" x2="866" y2="310" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+
+  <!-- Area fill under line chart -->
+  <path d="M 268 430 L 340 410 L 420 390 L 500 370 L 580 380 L 660 340 L 740 310 L 820 325 L 866 315 L 866 460 L 268 460 Z" fill="url(#chart)"/>
+  <!-- Line chart -->
+  <path d="M 268 430 L 340 410 L 420 390 L 500 370 L 580 380 L 660 340 L 740 310 L 820 325 L 866 315" fill="none" stroke="#D4890A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Data points -->
+  <circle cx="268" cy="430" r="4" fill="#D4890A"/>
+  <circle cx="420" cy="390" r="4" fill="#D4890A"/>
+  <circle cx="580" cy="380" r="4" fill="#D4890A"/>
+  <circle cx="740" cy="310" r="4" fill="#D4890A"/>
+  <circle cx="866" cy="315" r="5" fill="#D4890A" stroke="rgba(13,20,33,1)" stroke-width="2"/>
+
+  <!-- Tooltip -->
+  <rect x="800" y="290" width="110" height="52" rx="8" fill="#162040" stroke="rgba(212,137,10,0.4)" stroke-width="1"/>
+  <rect x="814" y="302" width="50" height="5" rx="2" fill="rgba(255,255,255,0.3)"/>
+  <rect x="814" y="316" width="70" height="10" rx="3" fill="rgba(255,255,255,0.75)"/>
+  <rect x="814" y="332" width="40" height="5" rx="2" fill="rgba(212,137,10,0.7)"/>
+
+  <!-- Right panel - pie/donut + table -->
+  <rect x="902" y="252" width="260" height="240" rx="12" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+  <rect x="920" y="268" width="80" height="8" rx="4" fill="rgba(255,255,255,0.4)"/>
+  <!-- Donut chart -->
+  <circle cx="1032" cy="370" r="54" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="20"/>
+  <circle cx="1032" cy="370" r="54" fill="none" stroke="#D4890A" stroke-width="20" stroke-dasharray="170 340" stroke-dashoffset="85" transform="rotate(-90 1032 370)"/>
+  <circle cx="1032" cy="370" r="54" fill="none" stroke="rgba(16,185,129,0.7)" stroke-width="20" stroke-dasharray="90 340" stroke-dashoffset="-85" transform="rotate(-90 1032 370)"/>
+  <circle cx="1032" cy="370" r="54" fill="none" stroke="rgba(59,130,246,0.7)" stroke-width="20" stroke-dasharray="80 340" stroke-dashoffset="-175" transform="rotate(-90 1032 370)"/>
+  <rect x="1020" y="362" width="24" height="16" rx="2" fill="rgba(255,255,255,0.6)"/>
+
+  <!-- Bottom table -->
+  <rect x="248" y="508" width="912" height="140" rx="12" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+  <rect x="268" y="522" width="80" height="7" rx="3" fill="rgba(255,255,255,0.4)"/>
+  <!-- Table header -->
+  <rect x="268" y="546" width="872" height="1" fill="rgba(255,255,255,0.06)"/>
+  <rect x="268" y="540" width="120" height="5" rx="2" fill="rgba(255,255,255,0.2)"/>
+  <rect x="440" y="540" width="80" height="5" rx="2" fill="rgba(255,255,255,0.2)"/>
+  <rect x="600" y="540" width="90" height="5" rx="2" fill="rgba(255,255,255,0.2)"/>
+  <rect x="760" y="540" width="70" height="5" rx="2" fill="rgba(255,255,255,0.2)"/>
+  <!-- Table row 1 -->
+  <rect x="268" y="560" width="140" height="6" rx="3" fill="rgba(255,255,255,0.55)"/>
+  <rect x="440" y="560" width="70" height="6" rx="3" fill="rgba(255,255,255,0.35)"/>
+  <rect x="600" y="560" width="50" height="6" rx="3" fill="rgba(212,137,10,0.8)"/>
+  <rect x="760" y="560" width="80" height="6" rx="3" fill="rgba(16,185,129,0.6)"/>
+  <!-- Table row 2 -->
+  <rect x="268" y="580" width="120" height="6" rx="3" fill="rgba(255,255,255,0.55)"/>
+  <rect x="440" y="580" width="90" height="6" rx="3" fill="rgba(255,255,255,0.35)"/>
+  <rect x="600" y="580" width="60" height="6" rx="3" fill="rgba(212,137,10,0.6)"/>
+  <rect x="760" y="580" width="70" height="6" rx="3" fill="rgba(16,185,129,0.5)"/>
+  <!-- Table row 3 -->
+  <rect x="268" y="600" width="150" height="6" rx="3" fill="rgba(255,255,255,0.55)"/>
+  <rect x="440" y="600" width="60" height="6" rx="3" fill="rgba(255,255,255,0.35)"/>
+  <rect x="600" y="600" width="75" height="6" rx="3" fill="rgba(239,68,68,0.6)"/>
+  <rect x="760" y="600" width="90" height="6" rx="3" fill="rgba(239,68,68,0.5)"/>
+  <!-- Table row 4 -->
+  <rect x="268" y="620" width="110" height="6" rx="3" fill="rgba(255,255,255,0.55)"/>
+  <rect x="440" y="620" width="80" height="6" rx="3" fill="rgba(255,255,255,0.35)"/>
+  <rect x="600" y="620" width="55" height="6" rx="3" fill="rgba(212,137,10,0.7)"/>
+  <rect x="760" y="620" width="65" height="6" rx="3" fill="rgba(16,185,129,0.6)"/>
+</svg>

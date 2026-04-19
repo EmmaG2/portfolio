@@ -1,0 +1,106 @@
+---
+title: "Helio Analytics Platform"
+tagline: "Rebuilt a broken internal dashboard into a real-time analytics engine that cut reporting time from 6 hours to 8 minutes."
+category: "Full Stack"
+year: 2024
+status: "live"
+featured: true
+coverImage: "/images/helio-cover.svg"
+coverAlt: "Helio Analytics dashboard showing real-time fintech metrics, line charts and data tables"
+githubUrl: "https://github.com/EmmaG2"
+tech: ["Next.js", "TypeScript", "FastAPI", "PostgreSQL", "Redis", "Docker", "WebSockets"]
+metrics:
+  - { label: "Report generation time", value: "↓ 97%" }
+  - { label: "Analyst hours saved / mo", value: "320 hrs" }
+  - { label: "Annual cost savings", value: "$120k" }
+problem: "The finance team spent 6+ hours per day pulling CSVs, merging spreadsheets, and manually building reports that were outdated the moment they were printed."
+role: "Lead Full Stack Engineer · 2-person team"
+duration: "5 months"
+seo:
+  description: "Case study: rebuilding a fintech internal analytics dashboard with Next.js, FastAPI and real-time WebSocket streaming — saving 320 analyst hours per month."
+---
+
+import CaseStudySection from '../../components/work/CaseStudySection.astro'
+
+<CaseStudySection label="THE PROBLEM" index="01">
+
+Helio Technologies had 50 financial analysts running their day-to-day operations on a patchwork of Excel spreadsheets and a legacy reporting tool built in 2016 — before the company had any real scale.
+
+Every morning started the same way: analysts manually exported CSVs from three different data sources, opened a macro-laden Excel file, and waited 40 minutes for it to process before they could see yesterday's numbers. By the time a report was ready, the data was already stale.
+
+**The business impact was concrete:**
+- 50 analysts × 6 hours/day on manual reporting = 300 analyst-hours burned weekly on mechanical work
+- Reports were delivered to leadership 24–48 hours late
+- Two major compliance audits had failed partly due to inconsistent, manually assembled reports
+- The engineering team had received multiple escalations but always deprioritized it — the tool "worked," just badly
+
+My job was to replace it entirely. No iterating on the legacy system — it was beyond rescue.
+
+</CaseStudySection>
+
+<CaseStudySection label="MY APPROACH" index="02">
+
+The first week I spent entirely in observation mode. I shadowed three analysts through their daily workflow, asked them to narrate what they were doing and why, and took notes on every friction point. This was non-negotiable — I needed to understand the work before designing the tool.
+
+**Key discoveries from the research phase:**
+
+1. **Analysts didn't need all the data, just their slice of it.** Every analyst had a specific portfolio — rebuilding a global view was wasteful. Role-based dashboards would replace 70% of the spreadsheet work.
+
+2. **The bottleneck was data joining, not computation.** The raw data was clean. The problem was that it lived in three systems with no unified key. A proper ETL layer would eliminate most of the manual CSV work.
+
+3. **"Real-time" didn't mean sub-second.** Analysts refreshed their reports once per hour. A 5-minute refresh cycle would feel instantaneous compared to the current 24-hour lag.
+
+With this clarity, I proposed a three-layer architecture:
+- **Ingestion layer** (FastAPI + background workers) to unify and normalize data from all sources on a schedule
+- **Query layer** (PostgreSQL + Redis cache) to serve pre-aggregated views with sub-100ms latency
+- **Presentation layer** (Next.js + WebSockets) with role-based dashboards that push live updates
+
+</CaseStudySection>
+
+<CaseStudySection label="KEY DECISIONS" index="03">
+
+**Decision 1: FastAPI over Node.js for the backend**
+
+The data processing involved heavy pandas-style aggregations. Python's data ecosystem (pandas, numpy) was significantly more expressive than JavaScript alternatives. The slight operational complexity of running a Python service alongside Next.js was worth the developer velocity gain on the analytics logic.
+
+**Decision 2: WebSockets for live updates instead of polling**
+
+The instinct was to poll every 30 seconds. I pushed back and implemented WebSocket subscriptions instead. Each analyst's dashboard subscribes to their specific portfolio segments — the server only pushes deltas, not full payloads. This cut bandwidth by ~80% and made the UI feel genuinely live.
+
+**Decision 3: Materialised views over dynamic queries**
+
+Every important aggregation runs on a scheduled refresh cycle and lands in a materialised view. Dashboards read from those views, not from raw tables. This made queries near-instant (< 8ms p95) but required careful invalidation logic. The trade-off — slightly delayed data — was acceptable because the business process ran on hourly cycles anyway.
+
+**Decision 4: Role-based data isolation at the database level**
+
+I used PostgreSQL Row Level Security policies rather than application-level filtering. This meant even if a query bug existed, analysts could not see outside their data perimeter. A compliance requirement that would have cost weeks of application-level plumbing was reduced to about 40 lines of SQL.
+
+</CaseStudySection>
+
+<CaseStudySection label="THE RESULT" index="04">
+
+We launched to a pilot group of 12 analysts in month 4. By the end of the first week, I had not received a single support ticket — not because they weren't using it, but because they didn't need to.
+
+**Quantified impact (90 days post-launch, full rollout):**
+
+- Report generation went from **6 hours → 8 minutes** (97% reduction)
+- The analytics team reclaimed **320 analyst-hours per month**
+- At fully-loaded analyst cost, that's **$120k/year** in saved capacity
+- Compliance reporting, previously assembled manually for audits, is now one-click export
+- Leadership receives KPI dashboards with data never older than 5 minutes
+
+The qualitative feedback was equally strong. The lead analyst told me: *"This is the first tool we've had that actually understands how we work instead of making us adapt to it."*
+
+The previous system ran on a VM that required a weekly manual restart. The new platform has had **zero unplanned downtime** in 6 months of production.
+
+</CaseStudySection>
+
+<CaseStudySection label="WHAT I LEARNED" index="05">
+
+**Observation before architecture is not optional.** I was tempted to start with a tech spike in week one. Spending that time shadowing analysts instead saved me from building three features nobody needed and not building one they absolutely did.
+
+**PostgreSQL RLS is underused.** Most developers implement data isolation in application code, which means every new query path is a new potential security hole. Doing it at the database layer was initially unfamiliar territory for me — but the confidence it gave the compliance team was worth the learning curve.
+
+**I would run a shadow deployment earlier.** We ran both systems in parallel for 3 weeks before cutover. I should have started that earlier — it revealed two edge cases in the data normalization logic that would have caused analyst confusion on day one.
+
+</CaseStudySection>

@@ -1,0 +1,114 @@
+---
+title: "Nexara Market"
+tagline: "Built a multi-vendor e-commerce platform for the LATAM market from zero to $2.4M GMV in its first year of operation."
+category: "Full Stack"
+year: 2023
+status: "live"
+featured: true
+coverImage: "/images/nexara-cover.svg"
+coverAlt: "Nexara Market product grid showing multi-vendor e-commerce interface with product cards"
+liveUrl: "https://github.com/EmmaG2"
+githubUrl: "https://github.com/EmmaG2"
+tech: ["React", "Node.js", "PostgreSQL", "Redis", "Stripe", "MercadoPago", "Docker", "Nginx"]
+metrics:
+  - { label: "GMV in year 1", value: "$2.4M" }
+  - { label: "Active vendors", value: "1,800+" }
+  - { label: "Order success rate", value: "99.2%" }
+problem: "LATAM vendors needed a marketplace that understood regional payment methods, variable tax rules, and cross-border shipping — not a US-centric platform bolted onto a different market."
+role: "Full Stack Engineer · 4-person team"
+duration: "8 months"
+seo:
+  description: "Case study: building Nexara Market, a multi-vendor LATAM e-commerce platform with MercadoPago integration, vendor dashboards and $2.4M GMV in year one."
+---
+
+import CaseStudySection from '../../components/work/CaseStudySection.astro'
+
+<CaseStudySection label="THE PROBLEM" index="01">
+
+Nexara Digital saw a real gap in the LATAM e-commerce space: thousands of small-to-medium vendors were either selling through WhatsApp and Instagram DMs, or paying steep commissions to US-centric platforms that didn't support their local payment infrastructure.
+
+The problem wasn't that marketplaces didn't exist — it was that the dominant platforms treated LATAM as an afterthought. MercadoPago support was bolted on. Tax handling for Mexico, Colombia, and Argentina was wrong or nonexistent. Shipping integrations didn't cover regional carriers. And vendor dashboards were in English.
+
+**What we set out to build:**
+- A true multi-vendor marketplace where any seller could onboard in under 10 minutes
+- Native support for MercadoPago, OXXO Pay, and Stripe (for cross-border)
+- Correct VAT and IVA handling per-country with automatic invoice generation
+- A vendor dashboard built for sellers who aren't technical
+
+**The stakes:** Nexara had raised a seed round and had 18 months of runway. This needed to work.
+
+</CaseStudySection>
+
+<CaseStudySection label="MY APPROACH" index="02">
+
+My ownership on this project was the full stack: vendor-facing dashboard, buyer-facing storefront, admin panel, payment integrations, and the API layer tying everything together.
+
+I began by mapping the vendor onboarding journey as the most critical path — every feature downstream depends on vendors being activated, their catalogs being uploaded, and their payout accounts being connected.
+
+**The architecture decision that shaped everything:**
+
+Instead of a monolith, we built three distinct surfaces with a shared API:
+1. **Buyer storefront** (React + SSR for SEO)
+2. **Vendor dashboard** (React SPA — speed over SEO)
+3. **Admin panel** (React SPA — internal tool)
+
+All three talk to the same Node.js API. This let us move fast on each surface independently. When the vendor dashboard needed a new catalog bulk-import endpoint, we built it without touching storefront code.
+
+**Payment architecture:**
+
+Payments in LATAM are complex. A single order might be paid with a MercadoPago installment plan, need to split across multiple vendors, and require a separate invoice per vendor for their tax records. I designed a payment orchestration layer that handled:
+- Multi-party splits with held funds and release triggers
+- Per-country tax calculation via a rules engine
+- Automatic invoice PDF generation in the correct format per jurisdiction
+- Refund propagation back through all parties
+
+</CaseStudySection>
+
+<CaseStudySection label="KEY DECISIONS" index="03">
+
+**Decision 1: Vendor payouts via escrow, not instant transfer**
+
+The initial spec called for instant payouts to vendors. After researching LATAM payment processor reliability and fraud rates, I pushed for a 48-hour escrow window with optional early release for verified vendors. This single decision eliminated our projected fraud losses (estimated at 3-4% of GMV) and became a key trust signal for buyers.
+
+**Decision 2: PostgreSQL multi-tenancy via schema isolation**
+
+Each vendor's catalog, orders, and financials live in a dedicated PostgreSQL schema. This wasn't the simplest path — a single-schema design would have been faster to build — but it made GDPR-style data isolation, backup granularity, and vendor offboarding trivially easy. We could archive or delete a vendor's entire data footprint in one command.
+
+**Decision 3: Optimistic UI for the vendor catalog**
+
+Vendors uploading 500-product catalogs cannot wait for server confirmation on every row. I implemented an optimistic update pattern where the UI responds immediately, queues writes to a Redis-backed job processor, and surfaces errors asynchronously. Upload time from the vendor's perspective went from 12 minutes (sync) to under 60 seconds.
+
+**Decision 4: Rate the buyer, not just the vendor**
+
+Most marketplaces rate sellers. We built bidirectional ratings — vendors can flag buyers who consistently file false dispute claims. This changed the incentive structure and reduced our dispute rate by 28% in the first 3 months post-launch.
+
+</CaseStudySection>
+
+<CaseStudySection label="THE RESULT" index="04">
+
+We launched the beta to 50 invited vendors in month 6. By month 8, we were fully public. By month 12, the platform had processed **$2.4 million in GMV** with **1,800+ active vendors**.
+
+**Key metrics at the 12-month mark:**
+
+- **$2.4M GMV** processed with a 0.8% platform take rate
+- **1,800+ vendors** active (onboarding ~150 new vendors/week)
+- **99.2% order success rate** (payment + fulfillment)
+- **< 0.6% dispute rate** — industry average is 1.8%
+- **Average vendor onboarding time: 9 minutes**
+- Supported payment in **4 currencies, 3 countries**
+
+The vendor NPS score after 3 months was **+72** — higher than any competitor the PM team had benchmarked against.
+
+The platform runs on a 3-node Docker Swarm setup. At peak traffic (a flash sale with 12,000 concurrent users), p95 response time stayed below 180ms. We have not had a production outage of more than 2 minutes in 14 months.
+
+</CaseStudySection>
+
+<CaseStudySection label="WHAT I LEARNED" index="05">
+
+**Regional payment complexity compounds.** I estimated 3 weeks for payment integrations. It took 7. MercadoPago's sandbox environment does not perfectly mirror production behavior — I would factor that into estimates for any future LATAM payment work. Testing against production in a controlled way (small real transactions) was the only reliable approach.
+
+**Optimistic UI requires a solid error surface.** When you tell users their action succeeded before it has, you need an excellent way to surface failures after the fact. We underinvested in the error notification system early on and had to refactor it in month 4. Build the error path at the same time as the happy path.
+
+**Bidirectional trust mechanisms are underutilized.** The buyer-rating feature was a late addition and almost got cut for scope reasons. It ended up being one of the highest-impact decisions in the entire project. I'll advocate for this in any future marketplace work.
+
+</CaseStudySection>
