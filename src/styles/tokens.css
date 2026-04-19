@@ -20,15 +20,16 @@
 
   /* ─── Text ─── */
   --color-text-primary:     #111110;
-  --color-text-secondary:   rgba(17, 17, 16, 0.58);
-  --color-text-muted:       rgba(17, 17, 16, 0.32);
+  /* Use color-mix for better relative opacity */
+  --color-text-secondary:   color-mix(in srgb, var(--color-text-primary), transparent 42%);
+  --color-text-muted:       color-mix(in srgb, var(--color-text-primary), transparent 68%);
   --color-text-inverse:     #F5EFE3;
 
   /* ─── Accent — Amber warm ─── */
   --color-accent:           #D4890A;
   --color-accent-hover:     #E8A020;
-  --color-accent-dim:       rgba(212, 137, 10, 0.12);
-  --color-accent-glow:      rgba(212, 137, 10, 0.25);
+  --color-accent-dim:       color-mix(in srgb, var(--color-accent), transparent 88%);
+  --color-accent-glow:      color-mix(in srgb, var(--color-accent), transparent 75%);
 
   /* ─── Torus (read by Three.js) ─── */
   --torus-base:             #C47A0A;
@@ -80,25 +81,20 @@
 
 
   /* ─────────────────────────────────────────────
-     SPACING — base 4px
+     SPACING — Fluid scale based on 4px
   ───────────────────────────────────────────── */
 
-  --space-1:   0.25rem;
-  --space-2:   0.5rem;
-  --space-3:   0.75rem;
-  --space-4:   1rem;
-  --space-5:   1.25rem;
-  --space-6:   1.5rem;
-  --space-8:   2rem;
-  --space-10:  2.5rem;
-  --space-12:  3rem;
-  --space-16:  4rem;
-  --space-20:  5rem;
-  --space-24:  6rem;
-  --space-32:  8rem;
-  --space-40:  10rem;
-  --space-48:  12rem;
-  --space-64:  16rem;
+  --space-1:   clamp(0.25rem, 0.25rem + 0vw, 0.25rem);
+  --space-2:   clamp(0.5rem, 0.5rem + 0vw, 0.5rem);
+  --space-3:   clamp(0.7rem, 0.65rem + 0.2vw, 0.8rem);
+  --space-4:   clamp(0.9rem, 0.8rem + 0.4vw, 1.1rem);
+  --space-6:   clamp(1.3rem, 1.1rem + 0.8vw, 1.7rem);
+  --space-8:   clamp(1.8rem, 1.5rem + 1.2vw, 2.3rem);
+  --space-12:  clamp(2.5rem, 2.1rem + 2vw, 3.5rem);
+  --space-16:  clamp(3.5rem, 3rem + 3vw, 5rem);
+  --space-24:  clamp(5rem, 4rem + 5vw, 7.5rem);
+  --space-32:  clamp(6.5rem, 5.5rem + 7vw, 10rem);
+  --space-48:  clamp(10rem, 8rem + 10vw, 15rem);
 
 
   /* ─────────────────────────────────────────────

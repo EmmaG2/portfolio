@@ -4,17 +4,9 @@
 ───────────────────────────────────────────── */
 @font-face {
   font-family: "Cormorant Garamond";
-  src: url("../assets/fonts/Cormorant_Garamond/CormorantGaramond-VariableFont_wght.ttf") format("truetype");
+  src: url("../assets/fonts/CormorantGaramond-VariableFont_wght.woff2") format("woff2");
   font-weight: 300 700;
   font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Cormorant Garamond";
-  src: url("../assets/fonts/Cormorant_Garamond/CormorantGaramond-Italic-VariableFont_wght.ttf") format("truetype");
-  font-weight: 300 700;
-  font-style: italic;
   font-display: swap;
 }
 
@@ -24,17 +16,9 @@
 ───────────────────────────────────────────── */
 @font-face {
   font-family: "DM Sans";
-  src: url("../assets/fonts/DM_Sans/DMSans-VariableFont_opsz,wght.ttf") format("truetype");
+  src: url("../assets/fonts/DMSans-VariableFont_opsz,wght.woff2") format("woff2");
   font-weight: 100 1000;
   font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "DM Sans";
-  src: url("../assets/fonts/DM_Sans/DMSans-Italic-VariableFont_opsz,wght.ttf") format("truetype");
-  font-weight: 100 1000;
-  font-style: italic;
   font-display: swap;
 }
 
@@ -44,16 +28,8 @@
 ───────────────────────────────────────────── */
 @font-face {
   font-family: "JetBrains Mono";
-  src: url("../assets/fonts/JetBrains_Mono/JetBrainsMono-VariableFont_wght.ttf") format("truetype");
+  src: url("../assets/fonts/JetBrainsMono-VariableFont_wght.woff2") format("woff2");
   font-weight: 100 800;
   font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "JetBrains Mono";
-  src: url("../assets/fonts/JetBrains_Mono/JetBrainsMono-Italic-VariableFont_wght.ttf") format("truetype");
-  font-weight: 100 800;
-  font-style: italic;
   font-display: swap;
 }
