@@ -22,9 +22,24 @@ import AccentLabel from '../components/ui/AccentLabel.astro'
         The fastest way to reach me:
       </p>
 
-      <a href="mailto:23041076@itdurango.edu.mx" class="contact-page__email">
-        23041076@itdurango.edu.mx
-      </a>
+      <button id="contact-email-btn" type="button" class="contact-page__email">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <rect x="2" y="4" width="20" height="16" rx="2" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M2 8l10 7 10-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        fergranados.dev@···
+      </button>
+
+      <script>
+        const btn = document.getElementById('contact-email-btn')
+        if (btn) {
+          const parts = ['fergranados.dev', 'outlook.com']
+          btn.addEventListener('click', () => {
+            window.location.href = 'mailto:' + parts[0] + '\x40' + parts[1]
+          })
+          btn.setAttribute('title', parts[0] + '\x40' + parts[1])
+        }
+      </script>
 
       <nav class="contact-page__social" aria-label="Social links">
         <a
@@ -97,12 +112,17 @@ import AccentLabel from '../components/ui/AccentLabel.astro'
   }
 
   .contact-page__email {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
     font-family: var(--font-display);
     font-size: var(--text-2xl);
     color: var(--color-accent);
-    text-decoration: none;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
     transition: opacity var(--duration-fast) var(--ease-out-cubic);
-    word-break: break-all;
   }
 
   .contact-page__email:hover {
